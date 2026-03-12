@@ -9,7 +9,7 @@
 		<relativePath/>
 	</parent>
 
-	<groupId>com.savaleOx</groupId>
+	<groupId>com.savaleox</groupId>
 	<artifactId>hockeyteam</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>hockeyteam</name>

@@ -1,8 +1,8 @@
-package com.savaleOx.hockeyteam.controller;
+package com.savaleox.hockeyteam.controller;
 
-import com.savaleOx.hockeyteam.dto.AchievementRequestDto;
-import com.savaleOx.hockeyteam.dto.AchievementResponseDto;
-import com.savaleOx.hockeyteam.service.AchievementService;
+import com.savaleox.hockeyteam.dto.AchievementRequestDto;
+import com.savaleox.hockeyteam.dto.AchievementResponseDto;
+import com.savaleox.hockeyteam.service.AchievementService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 

@@ -1,6 +1,6 @@
-package com.savaleOx.hockeyteam.repository;
+package com.savaleox.hockeyteam.repository;
 
-import com.savaleOx.hockeyteam.model.entity.Player;
+import com.savaleox.hockeyteam.model.entity.Player;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

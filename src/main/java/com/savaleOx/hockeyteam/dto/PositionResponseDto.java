@@ -1,4 +1,4 @@
-package com.savaleOx.hockeyteam.dto;
+package com.savaleox.hockeyteam.dto;
 
 public class PositionResponseDto {
     private Long id;

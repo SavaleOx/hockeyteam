@@ -1,10 +1,10 @@
-package com.savaleOx.hockeyteam.service;
+package com.savaleox.hockeyteam.service;
 
-import com.savaleOx.hockeyteam.dto.AchievementRequestDto;
-import com.savaleOx.hockeyteam.dto.AchievementResponseDto;
-import com.savaleOx.hockeyteam.mapper.AchievementMapper;
-import com.savaleOx.hockeyteam.model.entity.Achievement;
-import com.savaleOx.hockeyteam.repository.AchievementRepository;
+import com.savaleox.hockeyteam.dto.AchievementRequestDto;
+import com.savaleox.hockeyteam.dto.AchievementResponseDto;
+import com.savaleox.hockeyteam.mapper.AchievementMapper;
+import com.savaleox.hockeyteam.model.entity.Achievement;
+import com.savaleox.hockeyteam.repository.AchievementRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -33,9 +33,7 @@ public class AchievementService {
 
     public AchievementResponseDto getByName(String name) {
         Achievement achievement = achievementRepository.findByName(name);
-        if (achievement == null) {
-            throw new RuntimeException("Achievement not found");
-        }
+
         return achievementMapper.toResponseDto(achievement);
     }
 
@@ -48,9 +46,7 @@ public class AchievementService {
 
     @Transactional
     public void delete(Long id) {
-        if (!achievementRepository.existsById(id)) {
-            throw new RuntimeException("Achievement not found");
-        }
+
         achievementRepository.deleteById(id);
     }
 }

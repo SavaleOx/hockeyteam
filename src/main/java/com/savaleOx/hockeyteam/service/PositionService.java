@@ -1,10 +1,10 @@
-package com.savaleOx.hockeyteam.service;
+package com.savaleox.hockeyteam.service;
 
-import com.savaleOx.hockeyteam.dto.PositionRequestDto;
-import com.savaleOx.hockeyteam.dto.PositionResponseDto;
-import com.savaleOx.hockeyteam.mapper.PositionMapper;
-import com.savaleOx.hockeyteam.model.entity.Position;
-import com.savaleOx.hockeyteam.repository.PositionRepository;
+import com.savaleox.hockeyteam.dto.PositionRequestDto;
+import com.savaleox.hockeyteam.dto.PositionResponseDto;
+import com.savaleox.hockeyteam.mapper.PositionMapper;
+import com.savaleox.hockeyteam.model.entity.Position;
+import com.savaleox.hockeyteam.repository.PositionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -33,9 +33,7 @@ public class PositionService {
 
     public PositionResponseDto getByName(String name) {
         Position position = positionRepository.findByName(name);
-        if (position == null) {
-            throw new RuntimeException("Position not found");
-        }
+
         return positionMapper.toResponseDto(position);
     }
 
@@ -48,9 +46,7 @@ public class PositionService {
 
     @Transactional
     public void delete(Long id) {
-        if (!positionRepository.existsById(id)) {
-            throw new RuntimeException("Position not found");
-        }
+
         positionRepository.deleteById(id);
     }
 }

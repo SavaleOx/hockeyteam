@@ -1,8 +1,8 @@
-package com.savaleOx.hockeyteam.controller;
+package com.savaleox.hockeyteam.controller;
 
-import com.savaleOx.hockeyteam.dto.StatisticRequestDto;
-import com.savaleOx.hockeyteam.dto.StatisticResponseDto;
-import com.savaleOx.hockeyteam.service.StatisticService;
+import com.savaleox.hockeyteam.dto.StatisticRequestDto;
+import com.savaleox.hockeyteam.dto.StatisticResponseDto;
+import com.savaleox.hockeyteam.service.StatisticService;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 

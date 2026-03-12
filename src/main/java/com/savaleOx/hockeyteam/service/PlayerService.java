@@ -1,14 +1,14 @@
-package com.savaleOx.hockeyteam.service;
+package com.savaleox.hockeyteam.service;
 
-import com.savaleOx.hockeyteam.dto.PlayerRequestDto;
-import com.savaleOx.hockeyteam.dto.PlayerResponseDto;
-import com.savaleOx.hockeyteam.mapper.PlayerMapper;
-import com.savaleOx.hockeyteam.model.entity.Player;
-import com.savaleOx.hockeyteam.model.entity.Team;
-import com.savaleOx.hockeyteam.model.entity.Position;
-import com.savaleOx.hockeyteam.repository.PlayerRepository;
-import com.savaleOx.hockeyteam.repository.TeamRepository;
-import com.savaleOx.hockeyteam.repository.PositionRepository;
+import com.savaleox.hockeyteam.dto.PlayerRequestDto;
+import com.savaleox.hockeyteam.dto.PlayerResponseDto;
+import com.savaleox.hockeyteam.mapper.PlayerMapper;
+import com.savaleox.hockeyteam.model.entity.Player;
+import com.savaleox.hockeyteam.model.entity.Team;
+import com.savaleox.hockeyteam.model.entity.Position;
+import com.savaleox.hockeyteam.repository.PlayerRepository;
+import com.savaleox.hockeyteam.repository.TeamRepository;
+import com.savaleox.hockeyteam.repository.PositionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -83,9 +83,7 @@ public class PlayerService {
 
     @Transactional
     public void delete(Long id) {
-        if (!playerRepository.existsById(id)) {
-            throw new RuntimeException("Player not found");
-        }
+
         playerRepository.deleteById(id);
     }
 }

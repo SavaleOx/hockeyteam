@@ -1,8 +1,8 @@
-package com.savaleOx.hockeyteam.mapper;
+package com.savaleox.hockeyteam.mapper;
 
-import com.savaleOx.hockeyteam.dto.StatisticRequestDto;
-import com.savaleOx.hockeyteam.dto.StatisticResponseDto;
-import com.savaleOx.hockeyteam.model.entity.Statistic;
+import com.savaleox.hockeyteam.dto.StatisticRequestDto;
+import com.savaleox.hockeyteam.dto.StatisticResponseDto;
+import com.savaleox.hockeyteam.model.entity.Statistic;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

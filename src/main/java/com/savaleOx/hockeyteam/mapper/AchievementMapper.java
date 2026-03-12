@@ -1,8 +1,8 @@
-package com.savaleOx.hockeyteam.mapper;
+package com.savaleox.hockeyteam.mapper;
 
-import com.savaleOx.hockeyteam.dto.AchievementRequestDto;
-import com.savaleOx.hockeyteam.dto.AchievementResponseDto;
-import com.savaleOx.hockeyteam.model.entity.Achievement;
+import com.savaleox.hockeyteam.dto.AchievementRequestDto;
+import com.savaleox.hockeyteam.dto.AchievementResponseDto;
+import com.savaleox.hockeyteam.model.entity.Achievement;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

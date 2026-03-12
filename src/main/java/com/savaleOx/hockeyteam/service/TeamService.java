@@ -1,10 +1,10 @@
-package com.savaleOx.hockeyteam.service;
+package com.savaleox.hockeyteam.service;
 
-import com.savaleOx.hockeyteam.dto.TeamRequestDto;
-import com.savaleOx.hockeyteam.dto.TeamResponseDto;
-import com.savaleOx.hockeyteam.mapper.TeamMapper;
-import com.savaleOx.hockeyteam.model.entity.Team;
-import com.savaleOx.hockeyteam.repository.TeamRepository;
+import com.savaleox.hockeyteam.dto.TeamRequestDto;
+import com.savaleox.hockeyteam.dto.TeamResponseDto;
+import com.savaleox.hockeyteam.mapper.TeamMapper;
+import com.savaleox.hockeyteam.model.entity.Team;
+import com.savaleox.hockeyteam.repository.TeamRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;
@@ -40,9 +40,7 @@ public class TeamService {
 
     @Transactional
     public void delete(Long id) {
-        if (!teamRepository.existsById(id)) {
-            throw new RuntimeException("Team not found");
-        }
+
         teamRepository.deleteById(id);
     }
 }

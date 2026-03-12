@@ -1,4 +1,4 @@
-package com.savaleOx.hockeyteam.model.entity;
+package com.savaleox.hockeyteam.model.entity;
 
 import jakarta.persistence.*;
 import java.util.HashSet;

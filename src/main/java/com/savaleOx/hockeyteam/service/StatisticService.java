@@ -1,12 +1,12 @@
-package com.savaleOx.hockeyteam.service;
+package com.savaleox.hockeyteam.service;
 
-import com.savaleOx.hockeyteam.dto.StatisticRequestDto;
-import com.savaleOx.hockeyteam.dto.StatisticResponseDto;
-import com.savaleOx.hockeyteam.mapper.StatisticMapper;
-import com.savaleOx.hockeyteam.model.entity.Player;
-import com.savaleOx.hockeyteam.model.entity.Statistic;
-import com.savaleOx.hockeyteam.repository.PlayerRepository;
-import com.savaleOx.hockeyteam.repository.StatisticRepository;
+import com.savaleox.hockeyteam.dto.StatisticRequestDto;
+import com.savaleox.hockeyteam.dto.StatisticResponseDto;
+import com.savaleox.hockeyteam.mapper.StatisticMapper;
+import com.savaleox.hockeyteam.model.entity.Player;
+import com.savaleox.hockeyteam.model.entity.Statistic;
+import com.savaleox.hockeyteam.repository.PlayerRepository;
+import com.savaleox.hockeyteam.repository.StatisticRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import java.util.List;

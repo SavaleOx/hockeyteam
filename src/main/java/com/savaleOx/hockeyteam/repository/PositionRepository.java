@@ -1,6 +1,6 @@
-package com.savaleOx.hockeyteam.repository;
+package com.savaleox.hockeyteam.repository;
 
-import com.savaleOx.hockeyteam.model.entity.Position;
+import com.savaleox.hockeyteam.model.entity.Position;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PositionRepository extends JpaRepository<Position, Long> {

@@ -1,4 +1,4 @@
-package com.savaleOx.hockeyteam;
+package com.savaleox.hockeyteam;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
