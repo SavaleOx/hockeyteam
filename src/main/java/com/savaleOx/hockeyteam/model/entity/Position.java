@@ -1,11 +1,15 @@
 package com.savaleox.hockeyteam.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "positions")
+@Getter
+@Setter
 public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,11 +20,4 @@ public class Position {
 
     @OneToMany(mappedBy = "position")
     private List<Player> players = new ArrayList<>();
-
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
-    public List<Player> getPlayers() { return players; }
-    public void setPlayers(List<Player> players) { this.players = players; }
 }
