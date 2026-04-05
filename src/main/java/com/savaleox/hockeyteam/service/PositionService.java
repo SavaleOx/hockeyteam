@@ -49,4 +49,24 @@ public class PositionService {
 
         positionRepository.deleteById(id);
     }
+
+    @Transactional
+    public PositionResponseDto update(Long id, PositionRequestDto dto) {
+        Position position = positionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Position not found"));
+        position.setName(dto.getName());
+        Position saved = positionRepository.save(position);
+        return positionMapper.toResponseDto(saved);
+    }
+
+    @Transactional
+    public PositionResponseDto patch(Long id, PositionRequestDto dto) {
+        Position position = positionRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Position not found"));
+        if (dto.getName() != null) {
+            position.setName(dto.getName());
+        }
+        Position saved = positionRepository.save(position);
+        return positionMapper.toResponseDto(saved);
+    }
 }

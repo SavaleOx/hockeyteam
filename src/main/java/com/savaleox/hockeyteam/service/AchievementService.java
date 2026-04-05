@@ -49,4 +49,28 @@ public class AchievementService {
 
         achievementRepository.deleteById(id);
     }
+
+    @Transactional
+    public AchievementResponseDto update(Long id, AchievementRequestDto dto) {
+        Achievement achievement = achievementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Achievement not found"));
+        achievement.setName(dto.getName());
+        achievement.setDescription(dto.getDescription());
+        Achievement saved = achievementRepository.save(achievement);
+        return achievementMapper.toResponseDto(saved);
+    }
+
+    @Transactional
+    public AchievementResponseDto patch(Long id, AchievementRequestDto dto) {
+        Achievement achievement = achievementRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Achievement not found"));
+        if (dto.getName() != null) {
+            achievement.setName(dto.getName());
+        }
+        if (dto.getDescription() != null) {
+            achievement.setDescription(dto.getDescription());
+        }
+        Achievement saved = achievementRepository.save(achievement);
+        return achievementMapper.toResponseDto(saved);
+    }
 }

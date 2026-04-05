@@ -7,6 +7,7 @@ import com.savaleox.hockeyteam.model.entity.Team;
 import com.savaleox.hockeyteam.repository.TeamRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -40,7 +41,30 @@ public class TeamService {
 
     @Transactional
     public void delete(Long id) {
-
         teamRepository.deleteById(id);
+    }
+
+    @Transactional
+    public TeamResponseDto update(Long id, TeamRequestDto dto) {
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+        team.setName(dto.getName());
+        team.setCity(dto.getCity());
+        Team saved = teamRepository.save(team);
+        return teamMapper.toResponseDto(saved);
+    }
+
+    @Transactional
+    public TeamResponseDto patch(Long id, TeamRequestDto dto) {
+        Team team = teamRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Team not found"));
+        if (dto.getName() != null) {
+            team.setName(dto.getName());
+        }
+        if (dto.getCity() != null) {
+            team.setCity(dto.getCity());
+        }
+        Team saved = teamRepository.save(team);
+        return teamMapper.toResponseDto(saved);
     }
 }

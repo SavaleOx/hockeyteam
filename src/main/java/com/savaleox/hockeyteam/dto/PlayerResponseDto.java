@@ -7,8 +7,6 @@ import lombok.Setter;
 @Setter
 public class PlayerResponseDto {
     private Long id;
-    private String name;
-    private String surname;
     private String fullName;
     private Integer number;
     private Integer age;

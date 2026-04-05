@@ -11,6 +11,7 @@ import com.savaleox.hockeyteam.repository.TeamRepository;
 import com.savaleox.hockeyteam.repository.PositionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 
 @Service
@@ -32,12 +33,6 @@ public class PlayerService {
         return playerRepository.findAll().stream()
                 .map(playerMapper::toResponseDto)
                 .toList();
-    }
-
-    public PlayerResponseDto getById(Long id) {
-        Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
-        return playerMapper.toResponseDto(player);
     }
 
     public List<PlayerResponseDto> getByTeam(Long teamId) {
@@ -64,6 +59,12 @@ public class PlayerService {
                 .toList();
     }
 
+    public PlayerResponseDto getById(Long id) {
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Player not found"));
+        return playerMapper.toResponseDto(player);
+    }
+
     @Transactional
     public PlayerResponseDto create(PlayerRequestDto dto) {
         Team team = teamRepository.findById(dto.getTeamId())
@@ -74,8 +75,8 @@ public class PlayerService {
         Player player = playerMapper.toEntity(dto);
         player.setTeam(team);
         player.setPosition(position);
-        player.setGoals(0);
-        player.setAssists(0);
+        player.setGoals(dto.getGoals());
+        player.setAssists(dto.getAssists());
 
         Player saved = playerRepository.save(player);
         return playerMapper.toResponseDto(saved);
@@ -83,7 +84,58 @@ public class PlayerService {
 
     @Transactional
     public void delete(Long id) {
-
         playerRepository.deleteById(id);
+    }
+
+    @Transactional
+    public PlayerResponseDto update(Long id, PlayerRequestDto dto) {
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Player not found"));
+        player.setName(dto.getName());
+        player.setSurname(dto.getSurname());
+        player.setNumber(dto.getNumber());
+        player.setAge(dto.getAge());
+        player.setGoals(dto.getGoals());
+        player.setAssists(dto.getAssists());
+        if (dto.getTeamId() != null) {
+            Team team = teamRepository.findById(dto.getTeamId())
+                    .orElseThrow(() -> new RuntimeException("Team not found"));
+            player.setTeam(team);
+        }
+        if (dto.getPositionId() != null) {
+            Position position = positionRepository.findById(dto.getPositionId())
+                    .orElseThrow(() -> new RuntimeException("Position not found"));
+            player.setPosition(position);
+        }
+
+        Player saved = playerRepository.save(player);
+        return playerMapper.toResponseDto(saved);
+    }
+
+    @Transactional
+    public PlayerResponseDto patch(Long id, PlayerRequestDto dto) {
+        Player player = playerRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Player not found"));
+
+        if (dto.getName() != null) player.setName(dto.getName());
+        if (dto.getSurname() != null) player.setSurname(dto.getSurname());
+        if (dto.getNumber() != null) player.setNumber(dto.getNumber());
+        if (dto.getAge() != null) player.setAge(dto.getAge());
+        if (dto.getGoals() != null) player.setGoals(dto.getGoals());
+        if (dto.getAssists() != null) player.setAssists(dto.getAssists());
+
+        if (dto.getTeamId() != null) {
+            Team team = teamRepository.findById(dto.getTeamId())
+                    .orElseThrow(() -> new RuntimeException("Team not found"));
+            player.setTeam(team);
+        }
+        if (dto.getPositionId() != null) {
+            Position position = positionRepository.findById(dto.getPositionId())
+                    .orElseThrow(() -> new RuntimeException("Position not found"));
+            player.setPosition(position);
+        }
+
+        Player saved = playerRepository.save(player);
+        return playerMapper.toResponseDto(saved);
     }
 }

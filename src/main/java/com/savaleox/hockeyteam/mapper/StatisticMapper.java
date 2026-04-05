@@ -10,12 +10,13 @@ import org.mapstruct.Mapping;
 public interface StatisticMapper {
 
     @Mapping(target = "playerId", source = "player.id")
-    @Mapping(target = "playerName", expression = "java(statistic.getPlayer().getName() + \" \" + statistic.getPlayer().getSurname())")
+    @Mapping(target = "playerName",
+            expression = "java(statistic.getPlayer().getName() + \" \" + statistic.getPlayer().getSurname())")
     @Mapping(target = "points", expression = "java(statistic.getGoals() + statistic.getAssists())")
     StatisticResponseDto toResponseDto(Statistic statistic);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "player", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
+        //@Mapping(target = "createdAt", ignore = true)
     Statistic toEntity(StatisticRequestDto dto);
 }
