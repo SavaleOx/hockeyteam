@@ -1,0 +1,54 @@
+package com.savaleox.hockeyteam.controller;
+
+import com.savaleox.hockeyteam.dto.CoachRequestDto;
+import com.savaleox.hockeyteam.dto.CoachResponseDto;
+import com.savaleox.hockeyteam.service.CoachService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/coaches")
+public class CoachController {
+
+    private final CoachService coachService;
+
+    public CoachController(CoachService coachService) {
+        this.coachService = coachService;
+    }
+
+    @GetMapping
+    public List<CoachResponseDto> getAll() {
+        return coachService.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public CoachResponseDto getById(@PathVariable Long id) {
+        return coachService.getById(id);
+    }
+
+    @GetMapping("/by-team")
+    public List<CoachResponseDto> getByTeam(@RequestParam Long teamId) {
+        return coachService.getByTeam(teamId);
+    }
+
+    @PostMapping
+    public CoachResponseDto create(@RequestBody CoachRequestDto dto) {
+        return coachService.create(dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        coachService.delete(id);
+    }
+
+    @PutMapping("/{id}")
+    public CoachResponseDto update(@PathVariable Long id, @RequestBody CoachRequestDto dto) {
+        return coachService.update(id, dto);
+    }
+
+    @PatchMapping("/{id}")
+    public CoachResponseDto patch(@PathVariable Long id, @RequestBody CoachRequestDto dto) {
+        return coachService.patch(id, dto);
+    }
+}

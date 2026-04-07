@@ -17,6 +17,5 @@ public interface StatisticMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "player", ignore = true)
-        //@Mapping(target = "createdAt", ignore = true)
     Statistic toEntity(StatisticRequestDto dto);
 }

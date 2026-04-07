@@ -22,9 +22,9 @@ public class Achievement {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(length = 15, nullable = false, unique = true)
     private String name;
-
+    @Column(length = 15)
     private String description;
 
     @ManyToMany(mappedBy = "achievements")

@@ -10,9 +10,12 @@ import org.mapstruct.Mapping;
 public interface TeamMapper {
 
     @Mapping(target = "playerIds", expression = "java(team.getPlayers().stream().map(p -> p.getId()).toList())")
+    @Mapping(target = "coachId", source = "coach.id")
+    @Mapping(target = "coachFullName", expression = "java(team.getCoach() != null ? team.getCoach().getName() + \" \" + team.getCoach().getSurname() : null)")
     TeamResponseDto toResponseDto(Team team);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "players", ignore = true)
+    @Mapping(target = "coach", ignore = true)
     Team toEntity(TeamRequestDto dto);
 }

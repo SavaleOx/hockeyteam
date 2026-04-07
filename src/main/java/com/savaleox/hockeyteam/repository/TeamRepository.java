@@ -11,9 +11,9 @@ public interface TeamRepository extends JpaRepository<Team, Long> {
 
     Team findByName(String name);
 
-    @EntityGraph(attributePaths = {"players"})
+    @EntityGraph(attributePaths = {"players", "coach"})
     List<Team> findAll();
 
-    @EntityGraph(attributePaths = {"players"})
+    @EntityGraph(attributePaths = {"players", "coach"})
     Optional<Team> findById(Long id);
 }

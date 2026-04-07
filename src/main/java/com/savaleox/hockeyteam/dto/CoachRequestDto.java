@@ -5,13 +5,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PlayerRequestDto {
+public class CoachRequestDto {
     private String name;
     private String surname;
-    private Integer number;
     private Integer age;
+    private String tactic;
     private Long teamId;
-    private String position;
-    private Integer goals;
-    private Integer assists;
 }

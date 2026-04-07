@@ -14,4 +14,6 @@ public class TeamResponseDto {
     private String name;
     private String city;
     private List<Long> playerIds;
+    private Long coachId;
+    private String coachFullName;
 }

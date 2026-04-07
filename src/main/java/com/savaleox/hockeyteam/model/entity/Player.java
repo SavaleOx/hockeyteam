@@ -1,8 +1,11 @@
 package com.savaleox.hockeyteam.model.entity;
 
+import com.savaleox.hockeyteam.model.enums.Position;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,10 +33,10 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(length = 15, nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(length = 15, nullable = false)
     private String surname;
 
     private Integer number;
@@ -44,9 +47,8 @@ public class Player {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "position_id")
+    @Column(length = 15, nullable = false)
+    @Enumerated(EnumType.STRING)
     private Position position;
 
     @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, orphanRemoval = true)
