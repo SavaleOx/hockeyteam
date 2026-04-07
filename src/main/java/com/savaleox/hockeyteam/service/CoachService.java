@@ -48,10 +48,6 @@ public class CoachService {
     @Transactional
     public CoachResponseDto create(CoachRequestDto dto) {
         Team team = null;
-        /*if (dto.getTeamId() != null) {
-            team = teamRepository.findById(dto.getTeamId());
-                    //.orElseThrow(() -> new RuntimeException("Team not found"));
-        }*/
         Coach coach = coachMapper.toEntity(dto);
         coach.setTeam(team);
         coach.setAge(dto.getAge());
@@ -75,7 +71,7 @@ public class CoachService {
     @Transactional
     public CoachResponseDto update(Long id, CoachRequestDto dto) {
         Coach coach = coachRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Coach not found"));
+                .orElseThrow();
         coach.setName(dto.getName());
         coach.setSurname(dto.getSurname());
         if (dto.getAge() != null) coach.setAge(dto.getAge());
@@ -84,7 +80,7 @@ public class CoachService {
         Long newTeamId = dto.getTeamId();
         if (newTeamId != null) {
             Team newTeam = teamRepository.findById(newTeamId)
-                    .orElseThrow(() -> new RuntimeException("Team not found"));
+                    .orElseThrow();
             if (coach.getTeam() != null && !coach.getTeam().getId().equals(newTeamId)) {
                 Team oldTeam = coach.getTeam();
                 oldTeam.setCoach(null);
@@ -110,7 +106,7 @@ public class CoachService {
     @Transactional
     public CoachResponseDto patch(Long id, CoachRequestDto dto) {
         Coach coach = coachRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Coach not found"));
+                .orElseThrow();
 
         if (dto.getName() != null) coach.setName(dto.getName());
         if (dto.getSurname() != null) coach.setSurname(dto.getSurname());
@@ -119,15 +115,13 @@ public class CoachService {
 
         if (dto.getTeamId() != null) {
             Team newTeam = teamRepository.findById(dto.getTeamId())
-                    .orElseThrow(() -> new RuntimeException("Team not found"));
+                    .orElseThrow();
             if (coach.getTeam() != null && !coach.getTeam().getId().equals(newTeam.getId())) {
                 Team oldTeam = coach.getTeam();
                 oldTeam.setCoach(null);
                 teamRepository.save(oldTeam);
             }
-            if (newTeam.getCoach() != null && !newTeam.getCoach().getId().equals(id)) {
-                throw new RuntimeException("Team already has a different coach");
-            }
+
             coach.setTeam(newTeam);
             newTeam.setCoach(coach);
             teamRepository.save(newTeam);
