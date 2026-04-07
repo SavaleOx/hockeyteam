@@ -28,7 +28,7 @@ public class TeamService {
 
     public TeamResponseDto getById(Long id) {
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
+                .orElseThrow();
         return teamMapper.toResponseDto(team);
     }
 
@@ -47,7 +47,7 @@ public class TeamService {
     @Transactional
     public TeamResponseDto update(Long id, TeamRequestDto dto) {
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
+                .orElseThrow();
         team.setName(dto.getName());
         team.setCity(dto.getCity());
         Team saved = teamRepository.save(team);
@@ -57,7 +57,7 @@ public class TeamService {
     @Transactional
     public TeamResponseDto patch(Long id, TeamRequestDto dto) {
         Team team = teamRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Team not found"));
+                .orElseThrow();
         if (dto.getName() != null) {
             team.setName(dto.getName());
         }

@@ -63,7 +63,7 @@ public class StatisticService {
         Statistic statistic = statisticMapper.toEntity(dto);
         statistic.setPlayer(player);
         Statistic saved = statisticRepository.save(statistic);
-        if (dto.getGoals() < 0 || dto.getAssists() < 0) {
+        if (dto.getGoals() < 0 && dto.getAssists() < 0) {
             throw new IllegalArgumentException("Goals and assists cannot be negative");
         }
         player.setGoals(player.getGoals() + dto.getGoals());
