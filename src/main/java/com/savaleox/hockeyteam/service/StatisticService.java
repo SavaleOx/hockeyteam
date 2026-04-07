@@ -41,7 +41,7 @@ public class StatisticService {
     @Transactional
     public StatisticResponseDto create(StatisticRequestDto dto) {
         Player player = playerRepository.findById(dto.getPlayerId())
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+                .orElseThrow();
 
         Statistic statistic = statisticMapper.toEntity(dto);
         statistic.setPlayer(player);
@@ -59,7 +59,7 @@ public class StatisticService {
 
     public StatisticResponseDto createWithoutTransactional(StatisticRequestDto dto) {
         Player player = playerRepository.findById(dto.getPlayerId())
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+                .orElseThrow();
         Statistic statistic = statisticMapper.toEntity(dto);
         statistic.setPlayer(player);
         Statistic saved = statisticRepository.save(statistic);
@@ -76,7 +76,7 @@ public class StatisticService {
     @Transactional
     public void delete(Long id) {
         Statistic statistic = statisticRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Statistic not found"));
+                .orElseThrow();
 
         Player player = statistic.getPlayer();
         player.setGoals(player.getGoals() - statistic.getGoals());
@@ -89,7 +89,7 @@ public class StatisticService {
     @Transactional
     public StatisticResponseDto update(Long id, StatisticRequestDto dto) {
         Statistic statistic = statisticRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Statistic not found"));
+                .orElseThrow();
         Player player = statistic.getPlayer();
         player.setGoals(player.getGoals() - statistic.getGoals());
         player.setAssists(player.getAssists() - statistic.getAssists());
@@ -101,7 +101,7 @@ public class StatisticService {
 
         if (dto.getPlayerId() != null && !dto.getPlayerId().equals(player.getId())) {
             Player newPlayer = playerRepository.findById(dto.getPlayerId())
-                    .orElseThrow(() -> new RuntimeException("Player not found"));
+                    .orElseThrow();
             statistic.setPlayer(newPlayer);
             player = newPlayer;
         }
@@ -117,7 +117,7 @@ public class StatisticService {
     @Transactional
     public StatisticResponseDto patch(Long id, StatisticRequestDto dto) {
         Statistic statistic = statisticRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Statistic not found"));
+                .orElseThrow();
         Player player = statistic.getPlayer();
 
         int oldGoals = statistic.getGoals();
@@ -140,7 +140,7 @@ public class StatisticService {
 
 
             Player newPlayer = playerRepository.findById(dto.getPlayerId())
-                    .orElseThrow(() -> new RuntimeException("Player not found"));
+                    .orElseThrow();
             statistic.setPlayer(newPlayer);
             player = newPlayer;
             player.setGoals(player.getGoals() + statistic.getGoals());
