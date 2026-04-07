@@ -27,7 +27,7 @@ public class AchievementService {
 
     public AchievementResponseDto getById(Long id) {
         Achievement achievement = achievementRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Achievement not found"));
+                .orElseThrow();
         return achievementMapper.toResponseDto(achievement);
     }
 
@@ -53,7 +53,7 @@ public class AchievementService {
     @Transactional
     public AchievementResponseDto update(Long id, AchievementRequestDto dto) {
         Achievement achievement = achievementRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Achievement not found"));
+                .orElseThrow();
         achievement.setName(dto.getName());
         achievement.setDescription(dto.getDescription());
         Achievement saved = achievementRepository.save(achievement);
@@ -63,7 +63,7 @@ public class AchievementService {
     @Transactional
     public AchievementResponseDto patch(Long id, AchievementRequestDto dto) {
         Achievement achievement = achievementRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Achievement not found"));
+                .orElseThrow();
         if (dto.getName() != null) {
             achievement.setName(dto.getName());
         }

@@ -71,14 +71,14 @@ public class PlayerService {
 
     public PlayerResponseDto getById(Long id) {
         Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+                .orElseThrow();
         return playerMapper.toResponseDto(player);
     }
 
     @Transactional
     public PlayerResponseDto create(PlayerRequestDto dto) {
         Team team = teamRepository.findById(dto.getTeamId())
-                .orElseThrow(() -> new RuntimeException("Team not found"));
+                .orElseThrow();
 
         Player player = playerMapper.toEntity(dto);
         player.setTeam(team);
@@ -86,11 +86,7 @@ public class PlayerService {
         player.setAssists(dto.getAssists());
 
         if (dto.getPosition() != null) {
-            try {
-                player.setPosition(Position.valueOf(dto.getPosition().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid position: " + dto.getPosition());
-            }
+            player.setPosition(Position.valueOf(dto.getPosition().toUpperCase()));
         }
 
         Player saved = playerRepository.save(player);
@@ -105,7 +101,7 @@ public class PlayerService {
     @Transactional
     public PlayerResponseDto update(Long id, PlayerRequestDto dto) {
         Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+                .orElseThrow();
 
         player.setName(dto.getName());
         player.setSurname(dto.getSurname());
@@ -116,16 +112,12 @@ public class PlayerService {
 
         if (dto.getTeamId() != null) {
             Team team = teamRepository.findById(dto.getTeamId())
-                    .orElseThrow(() -> new RuntimeException("Team not found"));
+                    .orElseThrow();
             player.setTeam(team);
         }
 
         if (dto.getPosition() != null) {
-            try {
-                player.setPosition(Position.valueOf(dto.getPosition().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid position: " + dto.getPosition());
-            }
+            player.setPosition(Position.valueOf(dto.getPosition().toUpperCase()));
         }
 
         Player saved = playerRepository.save(player);
@@ -135,7 +127,7 @@ public class PlayerService {
     @Transactional
     public PlayerResponseDto patch(Long id, PlayerRequestDto dto) {
         Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Player not found"));
+                .orElseThrow();
 
         if (dto.getName() != null) player.setName(dto.getName());
         if (dto.getSurname() != null) player.setSurname(dto.getSurname());
@@ -146,16 +138,13 @@ public class PlayerService {
 
         if (dto.getTeamId() != null) {
             Team team = teamRepository.findById(dto.getTeamId())
-                    .orElseThrow(() -> new RuntimeException("Team not found"));
+                    .orElseThrow();
             player.setTeam(team);
         }
 
         if (dto.getPosition() != null) {
-            try {
-                player.setPosition(Position.valueOf(dto.getPosition().toUpperCase()));
-            } catch (IllegalArgumentException e) {
-                throw new RuntimeException("Invalid position: " + dto.getPosition());
-            }
+
+            player.setPosition(Position.valueOf(dto.getPosition().toUpperCase()));
         }
 
         Player saved = playerRepository.save(player);
