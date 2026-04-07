@@ -48,13 +48,10 @@ public class CoachService {
     @Transactional
     public CoachResponseDto create(CoachRequestDto dto) {
         Team team = null;
-        if (dto.getTeamId() != null) {
-            team = teamRepository.findById(dto.getTeamId())
-                    .orElseThrow(() -> new RuntimeException("Team not found"));
-            if (team.getCoach() != null) {
-                throw new RuntimeException("Team already has a coach");
-            }
-        }
+        /*if (dto.getTeamId() != null) {
+            team = teamRepository.findById(dto.getTeamId());
+                    //.orElseThrow(() -> new RuntimeException("Team not found"));
+        }*/
         Coach coach = coachMapper.toEntity(dto);
         coach.setTeam(team);
         coach.setAge(dto.getAge());
@@ -93,9 +90,7 @@ public class CoachService {
                 oldTeam.setCoach(null);
                 teamRepository.save(oldTeam);
             }
-            if (newTeam.getCoach() != null && !newTeam.getCoach().getId().equals(id)) {
-                throw new RuntimeException("Team already has a different coach");
-            }
+
             coach.setTeam(newTeam);
             newTeam.setCoach(coach);
             teamRepository.save(newTeam);
