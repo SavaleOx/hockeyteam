@@ -73,8 +73,12 @@ public class CoachService {
                 .orElseThrow();
         coach.setName(dto.getName());
         coach.setSurname(dto.getSurname());
-        if (dto.getAge() != null) coach.setAge(dto.getAge());
-        if (dto.getTactic() != null) coach.setTactic(dto.getTactic());
+        if (dto.getAge() != null) {
+            coach.setAge(dto.getAge());
+        }
+        if (dto.getTactic() != null) {
+            coach.setTactic(dto.getTactic());
+        }
 
         Long newTeamId = dto.getTeamId();
         if (newTeamId != null) {
@@ -107,10 +111,18 @@ public class CoachService {
         Coach coach = coachRepository.findById(id)
                 .orElseThrow();
 
-        if (dto.getName() != null) coach.setName(dto.getName());
-        if (dto.getSurname() != null) coach.setSurname(dto.getSurname());
-        if (dto.getAge() != null) coach.setAge(dto.getAge());
-        if (dto.getTactic() != null) coach.setTactic(dto.getTactic());
+        if (dto.getName() != null) {
+            coach.setName(dto.getName());
+        }
+        if (dto.getSurname() != null) {
+            coach.setSurname(dto.getSurname());
+        }
+        if (dto.getAge() != null) {
+            coach.setAge(dto.getAge());
+        }
+        if (dto.getTactic() != null) {
+            coach.setTactic(dto.getTactic());
+        }
 
         if (dto.getTeamId() != null) {
             Team newTeam = teamRepository.findById(dto.getTeamId())

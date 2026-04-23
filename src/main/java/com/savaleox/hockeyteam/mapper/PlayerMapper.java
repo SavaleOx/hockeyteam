@@ -33,7 +33,9 @@ public interface PlayerMapper {
 
     @Named("stringToEnum")
     default Position stringToEnum(String position) {
-        if (position == null) return null;
+        if (position == null) {
+            return null;
+        }
         try {
             return Position.valueOf(position.toUpperCase());
         } catch (IllegalArgumentException e) {

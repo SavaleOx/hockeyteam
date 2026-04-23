@@ -19,8 +19,12 @@ public final class SearchCacheKey {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SearchCacheKey that)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof SearchCacheKey that)) {
+            return false;
+        }
         return page == that.page && size == that.size &&
                 Objects.equals(criteria, that.criteria) &&
                 Objects.equals(sort, that.sort);

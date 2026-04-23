@@ -1,5 +1,6 @@
 package com.savaleox.hockeyteam.service;
 
+import ch.qos.logback.classic.Logger;
 import com.savaleox.hockeyteam.cache.SearchCacheKey;
 import com.savaleox.hockeyteam.cache.SearchCacheManager;
 import com.savaleox.hockeyteam.dto.PlayerRequestDto;
@@ -24,6 +25,7 @@ public class PlayerService {
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
     private final PlayerMapper playerMapper;
+    private Logger log;
 
     public PlayerService(SearchCacheManager cacheManager, PlayerRepository playerRepository,
                          TeamRepository teamRepository,
@@ -139,12 +141,24 @@ public class PlayerService {
         Player player = playerRepository.findById(id)
                 .orElseThrow();
 
-        if (dto.getName() != null) player.setName(dto.getName());
-        if (dto.getSurname() != null) player.setSurname(dto.getSurname());
-        if (dto.getNumber() != null) player.setNumber(dto.getNumber());
-        if (dto.getAge() != null) player.setAge(dto.getAge());
-        if (dto.getGoals() != null) player.setGoals(dto.getGoals());
-        if (dto.getAssists() != null) player.setAssists(dto.getAssists());
+        if (dto.getName() != null) {
+            player.setName(dto.getName());
+        }
+        if (dto.getSurname() != null) {
+            player.setSurname(dto.getSurname());
+        }
+        if (dto.getNumber() != null) {
+            player.setNumber(dto.getNumber());
+        }
+        if (dto.getAge() != null) {
+            player.setAge(dto.getAge());
+        }
+        if (dto.getGoals() != null) {
+            player.setGoals(dto.getGoals());
+        }
+        if (dto.getAssists() != null) {
+            player.setAssists(dto.getAssists());
+        }
 
         if (dto.getTeamId() != null) {
             Team team = teamRepository.findById(dto.getTeamId())

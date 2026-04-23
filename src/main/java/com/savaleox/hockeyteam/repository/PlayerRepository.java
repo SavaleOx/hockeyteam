@@ -48,7 +48,7 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
       AND p.goals <= COALESCE(:#{#criteria.maxGoals}, p.goals)
       AND p.assists >= COALESCE(:#{#criteria.minAssists}, p.assists)
       AND p.assists <= COALESCE(:#{#criteria.maxAssists}, p.assists)
-    """)
+        """)
     Page<Player> searchWithFiltersJPQL(
             @Param("criteria") PlayerSearchCriteria criteria,
             Pageable pageable

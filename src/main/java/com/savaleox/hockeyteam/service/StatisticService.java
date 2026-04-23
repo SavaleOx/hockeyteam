@@ -96,10 +96,18 @@ public class StatisticService {
         player.setGoals(player.getGoals() - statistic.getGoals());
         player.setAssists(player.getAssists() - statistic.getAssists());
 
-        if (dto.getSeason() != null) statistic.setSeason(dto.getSeason());
-        if (dto.getGoals() != null) statistic.setGoals(dto.getGoals());
-        if (dto.getAssists() != null) statistic.setAssists(dto.getAssists());
-        if (dto.getGames() != null) statistic.setGames(dto.getGames());
+        if (dto.getSeason() != null) {
+            statistic.setSeason(dto.getSeason());
+        }
+        if (dto.getGoals() != null) {
+            statistic.setGoals(dto.getGoals());
+        }
+        if (dto.getAssists() != null) {
+            statistic.setAssists(dto.getAssists());
+        }
+        if (dto.getGames() != null) {
+            statistic.setGames(dto.getGames());
+        }
 
         if (dto.getPlayerId() != null && !dto.getPlayerId().equals(player.getId())) {
             Player newPlayer = playerRepository.findById(dto.getPlayerId())
@@ -125,10 +133,18 @@ public class StatisticService {
         int oldGoals = statistic.getGoals();
         int oldAssists = statistic.getAssists();
 
-        if (dto.getSeason() != null) statistic.setSeason(dto.getSeason());
-        if (dto.getGames() != null) statistic.setGames(dto.getGames());
-        if (dto.getGoals() != null) statistic.setGoals(dto.getGoals());
-        if (dto.getAssists() != null) statistic.setAssists(dto.getAssists());
+        if (dto.getSeason() != null) {
+            statistic.setSeason(dto.getSeason());
+        }
+        if (dto.getGames() != null) {
+            statistic.setGames(dto.getGames());
+        }
+        if (dto.getGoals() != null) {
+            statistic.setGoals(dto.getGoals());
+        }
+        if (dto.getAssists() != null) {
+            statistic.setAssists(dto.getAssists());
+        }
 
         int deltaGoals = statistic.getGoals() - oldGoals;
         int deltaAssists = statistic.getAssists() - oldAssists;

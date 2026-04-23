@@ -12,17 +12,20 @@ public class SearchCacheManager {
 
     public <T> Page<T> get(SearchCacheKey key) {
         Page<T> result = (Page<T>) cache.get(key);
+        System.out.print("check");
         if (result != null) {
-            log.debug("CACHE HIT: searchWithFilters for key {}", key);
+            System.out.print("cache hit");
+            log.info("CACHE HIT: searchWithFilters for key {}", key);
         } else {
-            log.debug("CACHE MISS: searchWithFilters for key {}", key);
+            System.out.print("cache miss");
+            log.info("CACHE MISS: searchWithFilters for key {}", key);
         }
         return result;
     }
 
     public <T> void put(SearchCacheKey key, Page<T> page) {
         cache.put(key, page);
-        log.debug("CACHE PUT: key={}, totalElements={}, totalPages={}",
+        log.info("CACHE PUT: key={}, totalElements={}, totalPages={}",
                 key, page.getTotalElements(), page.getTotalPages());
     }
 
