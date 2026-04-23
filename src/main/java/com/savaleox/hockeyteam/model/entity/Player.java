@@ -33,10 +33,10 @@ public class Player {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 15, nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(length = 15, nullable = false)
+    @Column(nullable = false)
     private String surname;
 
     private Integer number;
@@ -47,7 +47,7 @@ public class Player {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "team_id")
     private Team team;
-    @Column(length = 15, nullable = false)
+    @Column(length = 10, nullable = false)
     @Enumerated(EnumType.STRING)
     private Position position;
 

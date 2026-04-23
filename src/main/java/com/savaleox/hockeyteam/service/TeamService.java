@@ -3,6 +3,7 @@ package com.savaleox.hockeyteam.service;
 import com.savaleox.hockeyteam.dto.TeamRequestDto;
 import com.savaleox.hockeyteam.dto.TeamResponseDto;
 import com.savaleox.hockeyteam.mapper.TeamMapper;
+import com.savaleox.hockeyteam.model.entity.Coach;
 import com.savaleox.hockeyteam.model.entity.Team;
 import com.savaleox.hockeyteam.repository.TeamRepository;
 import jakarta.transaction.Transactional;
@@ -14,10 +15,12 @@ import java.util.List;
 public class TeamService {
     private final TeamRepository teamRepository;
     private final TeamMapper teamMapper;
+    private final PlayerService playerService;
 
-    public TeamService(TeamRepository teamRepository, TeamMapper teamMapper) {
+    public TeamService(TeamRepository teamRepository, TeamMapper teamMapper, PlayerService playerService) {
         this.teamRepository = teamRepository;
         this.teamMapper = teamMapper;
+        this.playerService = playerService;
     }
 
     public List<TeamResponseDto> getAll() {
@@ -36,11 +39,19 @@ public class TeamService {
     public TeamResponseDto create(TeamRequestDto dto) {
         Team team = teamMapper.toEntity(dto);
         Team saved = teamRepository.save(team);
+        playerService.invalidateSearchCache();
         return teamMapper.toResponseDto(saved);
     }
 
     @Transactional
     public void delete(Long id) {
+        Team team = teamRepository.findById(id).orElseThrow();
+
+        if (team.getCoach() != null) {
+            Coach coach = team.getCoach();
+            coach.setTeam(null);
+        }
+        playerService.invalidateSearchCache();
         teamRepository.deleteById(id);
     }
 
@@ -51,6 +62,7 @@ public class TeamService {
         team.setName(dto.getName());
         team.setCity(dto.getCity());
         Team saved = teamRepository.save(team);
+        playerService.invalidateSearchCache();
         return teamMapper.toResponseDto(saved);
     }
 
@@ -65,6 +77,7 @@ public class TeamService {
             team.setCity(dto.getCity());
         }
         Team saved = teamRepository.save(team);
+        playerService.invalidateSearchCache();
         return teamMapper.toResponseDto(saved);
     }
 }

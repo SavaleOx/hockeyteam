@@ -49,7 +49,7 @@ public class CoachService {
     public CoachResponseDto create(CoachRequestDto dto) {
         Team team = null;
         Coach coach = coachMapper.toEntity(dto);
-        coach.setTeam(team);
+        coach.setTeam(teamRepository.getById(dto.getTeamId()));
         coach.setAge(dto.getAge());
         coach.setTactic(dto.getTactic());
         Coach saved = coachRepository.save(coach);

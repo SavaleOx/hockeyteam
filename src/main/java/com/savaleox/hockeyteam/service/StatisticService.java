@@ -17,13 +17,15 @@ public class StatisticService {
     private final StatisticRepository statisticRepository;
     private final PlayerRepository playerRepository;
     private final StatisticMapper statisticMapper;
+    private final PlayerService playerService;
 
     public StatisticService(StatisticRepository statisticRepository,
                             PlayerRepository playerRepository,
-                            StatisticMapper statisticMapper) {
+                            StatisticMapper statisticMapper, PlayerService playerService) {
         this.statisticRepository = statisticRepository;
         this.playerRepository = playerRepository;
         this.statisticMapper = statisticMapper;
+        this.playerService = playerService;
     }
 
     public List<StatisticResponseDto> getByPlayer(Long playerId) {
@@ -53,7 +55,7 @@ public class StatisticService {
         player.setGoals(player.getGoals() + dto.getGoals());
         player.setAssists(player.getAssists() + dto.getAssists());
         playerRepository.save(player);
-
+        playerService.invalidateSearchCache();
         return statisticMapper.toResponseDto(saved);
     }
 
@@ -82,7 +84,7 @@ public class StatisticService {
         player.setGoals(player.getGoals() - statistic.getGoals());
         player.setAssists(player.getAssists() - statistic.getAssists());
         playerRepository.save(player);
-
+        playerService.invalidateSearchCache();
         statisticRepository.delete(statistic);
     }
 
@@ -150,6 +152,7 @@ public class StatisticService {
         }
 
         Statistic saved = statisticRepository.save(statistic);
+        playerService.invalidateSearchCache();
         return statisticMapper.toResponseDto(saved);
     }
 }

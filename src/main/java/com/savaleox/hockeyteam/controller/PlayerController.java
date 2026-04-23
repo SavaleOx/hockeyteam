@@ -2,17 +2,11 @@ package com.savaleox.hockeyteam.controller;
 
 import com.savaleox.hockeyteam.dto.PlayerRequestDto;
 import com.savaleox.hockeyteam.dto.PlayerResponseDto;
+import com.savaleox.hockeyteam.dto.PlayerSearchCriteria;
 import com.savaleox.hockeyteam.service.PlayerService;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -69,5 +63,19 @@ public class PlayerController {
     @PatchMapping("/{id}")
     public PlayerResponseDto patch(@PathVariable Long id, @RequestBody PlayerRequestDto dto) {
         return playerService.patch(id, dto);
+    }
+
+    @GetMapping("/search")
+    public Page<PlayerResponseDto> searchPlayersJPQL(
+            @ModelAttribute PlayerSearchCriteria criteria,
+            Pageable pageable) {
+        return playerService.searchPlayersJPQL(criteria, pageable);
+    }
+
+    @GetMapping("/search/native")
+    public Page<PlayerResponseDto> searchPlayersNative(
+            @ModelAttribute PlayerSearchCriteria criteria,
+            Pageable pageable) {
+        return playerService.searchPlayersNative(criteria, pageable);
     }
 }

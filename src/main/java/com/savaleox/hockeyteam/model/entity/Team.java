@@ -24,9 +24,9 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 15, nullable = false, unique = true)
+    @Column(length = 50, nullable = false)
     private String name;
-    @Column(length = 15, nullable = false)
+    @Column(length = 170, nullable = false)
     private String city;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)

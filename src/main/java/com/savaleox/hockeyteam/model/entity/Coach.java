@@ -14,15 +14,15 @@ public class Coach {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 15, nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(length = 15, nullable = false)
+    @Column(nullable = false)
     private String surname;
 
     private Integer age;
 
-    @Column(length = 15)
+    @Column
     private String tactic;
 
     @OneToOne
