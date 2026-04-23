@@ -1,12 +1,8 @@
 package com.savaleox.hockeyteam.dto;
 
-import com.savaleox.hockeyteam.model.entity.Achievement;
-import com.savaleox.hockeyteam.model.entity.Statistic;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter

@@ -47,7 +47,6 @@ public class CoachService {
 
     @Transactional
     public CoachResponseDto create(CoachRequestDto dto) {
-        Team team = null;
         Coach coach = coachMapper.toEntity(dto);
         coach.setTeam(teamRepository.getById(dto.getTeamId()));
         coach.setAge(dto.getAge());
