@@ -12,12 +12,9 @@ public class SearchCacheManager {
 
     public <T> Page<T> get(SearchCacheKey key) {
         Page<T> result = (Page<T>) cache.get(key);
-        System.out.print("check");
         if (result != null) {
-            System.out.print("cache hit");
             log.info("CACHE HIT: searchWithFilters for key {}", key);
         } else {
-            System.out.print("cache miss");
             log.info("CACHE MISS: searchWithFilters for key {}", key);
         }
         return result;
