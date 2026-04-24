@@ -3,6 +3,7 @@ package com.savaleox.hockeyteam.controller;
 import com.savaleox.hockeyteam.dto.CoachRequestDto;
 import com.savaleox.hockeyteam.dto.CoachResponseDto;
 import com.savaleox.hockeyteam.service.CoachService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -42,7 +43,7 @@ public class CoachController {
     }
 
     @PostMapping
-    public CoachResponseDto create(@RequestBody CoachRequestDto dto) {
+    public CoachResponseDto create(@Valid @RequestBody CoachRequestDto dto) {
         return coachService.create(dto);
     }
 
@@ -52,7 +53,7 @@ public class CoachController {
     }
 
     @PutMapping("/{id}")
-    public CoachResponseDto update(@PathVariable Long id, @RequestBody CoachRequestDto dto) {
+    public CoachResponseDto update(@PathVariable Long id, @Valid @RequestBody CoachRequestDto dto) {
         return coachService.update(id, dto);
     }
 

@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import com.savaleox.hockeyteam.exceptions.ResourceNotFoundException;
 
 import java.util.List;
 
@@ -80,14 +81,14 @@ public class PlayerService {
 
     public PlayerResponseDto getById(Long id) {
         Player player = playerRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("Player", id));
         return playerMapper.toResponseDto(player);
     }
 
     @Transactional
     public PlayerResponseDto create(PlayerRequestDto dto) {
         Team team = teamRepository.findById(dto.getTeamId())
-                .orElseThrow();
+                .orElseThrow(() -> new ResourceNotFoundException("Team", dto.getTeamId()));
 
         Player player = playerMapper.toEntity(dto);
         player.setTeam(team);

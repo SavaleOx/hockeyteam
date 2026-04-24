@@ -1,43 +1,42 @@
 package com.savaleox.hockeyteam.dto;
 
-
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Getter
 @Setter
 @EqualsAndHashCode
-@Schema(description = "Search criteria for players")
+@Schema(description = "Search criteria for filtering players")
 public class PlayerSearchCriteria {
 
-    @Schema(example = "1")
+    @Schema(description = "Filter by player ID", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Long playerId;
 
-    @Schema(example = "19")
+    @Schema(description = "Filter by player age", example = "25", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer playerAge;
 
-    @Schema(example = "33")
+    @Schema(description = "Filter by jersey number", example = "97", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer playerNumber;
 
-    @Schema(example = "Victoria")
+    @Schema(description = "Filter by team name", example = "Victoria Maple Leafs",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String teamName;
 
-    @Schema(example = "FORWARD")
+    @Schema(description = "Filter by playing position", example = "FORWARD",
+            allowableValues = {"GOALKEEPER", "DEFENDER", "FORWARD"})
     private String playerPosition;
 
-    @Schema(example = "5")
+    @Schema(description = "Minimum goals scored", example = "10", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer minGoals;
 
-    @Schema(example = "15")
+    @Schema(description = "Maximum goals scored", example = "30", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer maxGoals;
 
-    @Schema(example = "5")
+    @Schema(description = "Minimum assists made", example = "15", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer minAssists;
 
-    @Schema(example = "15")
+    @Schema(description = "Maximum assists made", example = "40", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer maxAssists;
-
 }

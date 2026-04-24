@@ -3,6 +3,7 @@ package com.savaleox.hockeyteam.controller;
 import com.savaleox.hockeyteam.dto.TeamRequestDto;
 import com.savaleox.hockeyteam.dto.TeamResponseDto;
 import com.savaleox.hockeyteam.service.TeamService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -35,7 +36,7 @@ public class TeamController {
     }
 
     @PostMapping
-    public TeamResponseDto create(@RequestBody TeamRequestDto dto) {
+    public TeamResponseDto create(@Valid @RequestBody TeamRequestDto dto) {
         return teamService.create(dto);
     }
 
@@ -45,7 +46,7 @@ public class TeamController {
     }
 
     @PutMapping("/{id}")
-    public TeamResponseDto update(@PathVariable Long id, @RequestBody TeamRequestDto dto) {
+    public TeamResponseDto update(@PathVariable Long id, @Valid @RequestBody TeamRequestDto dto) {
         return teamService.update(id, dto);
     }
 

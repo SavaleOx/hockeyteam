@@ -4,6 +4,7 @@ import com.savaleox.hockeyteam.dto.PlayerRequestDto;
 import com.savaleox.hockeyteam.dto.PlayerResponseDto;
 import com.savaleox.hockeyteam.dto.PlayerSearchCriteria;
 import com.savaleox.hockeyteam.service.PlayerService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -56,7 +57,7 @@ public class PlayerController {
     }
 
     @PostMapping
-    public PlayerResponseDto create(@RequestBody PlayerRequestDto dto) {
+    public PlayerResponseDto create(@Valid @RequestBody PlayerRequestDto dto) {
         return playerService.create(dto);
     }
 
@@ -66,12 +67,12 @@ public class PlayerController {
     }
 
     @PutMapping("/{id}")
-    public PlayerResponseDto update(@PathVariable Long id, @RequestBody PlayerRequestDto dto) {
+    public PlayerResponseDto update(@PathVariable Long id, @Valid @RequestBody PlayerRequestDto dto) {
         return playerService.update(id, dto);
     }
 
     @PatchMapping("/{id}")
-    public PlayerResponseDto patch(@PathVariable Long id, @RequestBody PlayerRequestDto dto) {
+    public PlayerResponseDto patch(@PathVariable Long id, @Valid @RequestBody PlayerRequestDto dto) {
         return playerService.patch(id, dto);
     }
 
