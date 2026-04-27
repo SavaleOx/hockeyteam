@@ -220,7 +220,7 @@ public class PlayerService {
     @Transactional
     public PlayerResponseDto addAchievement(Long playerId, Long achievementId) {
         Player player = playerRepository.findById(playerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+                .orElseThrow(() -> new ResourceNotFoundException("", playerId));
 
         Achievement achievement = achievementRepository.findById(achievementId)
                 .orElseThrow(() -> new ResourceNotFoundException("Achievement", achievementId));
@@ -244,7 +244,7 @@ public class PlayerService {
     @Transactional
     public PlayerResponseDto removeAchievement(Long playerId, Long achievementId) {
         Player player = playerRepository.findById(playerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+                .orElseThrow(() -> new ResourceNotFoundException("", playerId));
 
         Achievement achievement = achievementRepository.findById(achievementId)
                 .orElseThrow(() -> new ResourceNotFoundException("Achievement", achievementId));
@@ -267,7 +267,7 @@ public class PlayerService {
 
     public List<AchievementResponseDto> getPlayerAchievements(Long playerId) {
         Player player = playerRepository.findById(playerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+                .orElseThrow(() -> new ResourceNotFoundException("", playerId));
 
         return player.getAchievements().stream()
                 .map(achievementMapper::toResponseDto)
@@ -277,7 +277,7 @@ public class PlayerService {
     @Transactional
     public PlayerResponseDto setAchievements(Long playerId, List<Long> achievementIds) {
         Player player = playerRepository.findById(playerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+                .orElseThrow(() -> new ResourceNotFoundException("", playerId));
 
         List<Achievement> newAchievements = achievementRepository.findAllById(achievementIds);
 
