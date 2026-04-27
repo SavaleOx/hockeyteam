@@ -30,7 +30,7 @@ public class PlayerResponseDto {
     @Schema(description = "Количество очков заработанных за карьеру (голы + ассисты)", example = "40")
     private Integer points;
 
-    @Schema(description = "Название команды игрока", example = "Victoria Maple Leafs")
+    @Schema(description = "Название команды игрока", example = "Динамо")
     private String teamName;
 
     @Schema(description = "Игровая позиция", example = "FORWARD")

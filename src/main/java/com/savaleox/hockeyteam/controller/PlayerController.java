@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +27,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/players")
+@Validated
 @Tag(name = "Игроки", description = "эндпоинт для манипуляций над игроками")
 public class PlayerController {
     private final PlayerService playerService;
@@ -35,11 +37,13 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Получение игроков по идентификатору")
     public PlayerResponseDto getById(@PathVariable Long id) {
         return playerService.getById(id);
     }
 
     @GetMapping
+    @Operation(summary = "Получение игроков")
     public List<PlayerResponseDto> getPlayers(
             @RequestParam(required = false) Long teamId,
             @RequestParam(required = false) String position,
@@ -61,26 +65,31 @@ public class PlayerController {
     }
 
     @PostMapping
+    @Operation(summary = "Создание игрока")
     public PlayerResponseDto create(@Valid @RequestBody PlayerRequestDto dto) {
         return playerService.create(dto);
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Удаление игрока")
     public void delete(@PathVariable Long id) {
         playerService.delete(id);
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Измение полей игрока")
     public PlayerResponseDto update(@PathVariable Long id, @Valid @RequestBody PlayerRequestDto dto) {
         return playerService.update(id, dto);
     }
 
     @PatchMapping("/{id}")
+    @Operation(summary = "Измение некоторых полей игрока")
     public PlayerResponseDto patch(@PathVariable Long id, @Valid @RequestBody PlayerRequestDto dto) {
         return playerService.patch(id, dto);
     }
 
     @GetMapping("/search")
+    @Operation(summary = "Поиск игроков с фильтрацией через JPQL")
     public Page<PlayerResponseDto> searchPlayersJPQL(
             @ModelAttribute PlayerSearchCriteria criteria,
             Pageable pageable) {
@@ -88,6 +97,7 @@ public class PlayerController {
     }
 
     @GetMapping("/search/native")
+    @Operation(summary = "Поиск игроков с фильтрацией через native query")
     public Page<PlayerResponseDto> searchPlayersNative(
             @ModelAttribute PlayerSearchCriteria criteria,
             Pageable pageable) {
@@ -95,7 +105,7 @@ public class PlayerController {
     }
 
     @PostMapping("/{playerId}/achievements/{achievementId}")
-    @Operation(summary = "Add achievement to player")
+    @Operation(summary = "Добавить достижение игроку")
     public PlayerResponseDto addAchievement(
             @PathVariable Long playerId,
             @PathVariable Long achievementId) {
@@ -103,7 +113,7 @@ public class PlayerController {
     }
 
     @DeleteMapping("/{playerId}/achievements/{achievementId}")
-    @Operation(summary = "Remove achievement from player")
+    @Operation(summary = "Удалить достижение игроку")
     public PlayerResponseDto removeAchievement(
             @PathVariable Long playerId,
             @PathVariable Long achievementId) {
@@ -111,14 +121,14 @@ public class PlayerController {
     }
 
     @GetMapping("/{playerId}/achievements")
-    @Operation(summary = "Get all achievements of a player")
+    @Operation(summary = "Получить все достижения игрока")
     public List<AchievementResponseDto> getPlayerAchievements(
             @PathVariable Long playerId) {
         return playerService.getPlayerAchievements(playerId);
     }
 
     @PutMapping("/{playerId}/achievements")
-    @Operation(summary = "Set achievements for player (replaces all)")
+    @Operation(summary = "Установить новые достижения игроку")
     public PlayerResponseDto setAchievements(
             @PathVariable Long playerId,
             @RequestBody List<Long> achievementIds) {
