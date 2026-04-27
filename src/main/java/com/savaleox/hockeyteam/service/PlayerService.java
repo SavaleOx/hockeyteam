@@ -93,7 +93,7 @@ public class PlayerService {
 
     public PlayerResponseDto getById(Long id) {
         Player player = playerRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Player", id));
+                .orElseThrow(() -> new ResourceNotFoundException("", id));
         return playerMapper.toResponseDto(player);
     }
 
