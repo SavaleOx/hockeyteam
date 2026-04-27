@@ -23,7 +23,7 @@ public class PlayerSearchCriteria {
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer playerNumber;
 
-    @Schema(description = "Фильтрация по определённой команде", example = "Victoria Maple Leafs",
+    @Schema(description = "Фильтрация по определённой команде", example = "Динамо",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String teamName;
 
