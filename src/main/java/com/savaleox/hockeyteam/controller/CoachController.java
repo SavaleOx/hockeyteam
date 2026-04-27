@@ -3,6 +3,7 @@ package com.savaleox.hockeyteam.controller;
 import com.savaleox.hockeyteam.dto.CoachRequestDto;
 import com.savaleox.hockeyteam.dto.CoachResponseDto;
 import com.savaleox.hockeyteam.service.CoachService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/coaches")
+@Tag(name = "Тренера", description = "эндпоинт для манипуляций над тренерами")
 public class CoachController {
 
     private final CoachService coachService;

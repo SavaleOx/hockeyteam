@@ -17,27 +17,27 @@ public class CoachRequestDto {
 
     @NotBlank(message = "Name is required")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 50 characters")
-    @Schema(description = "First name of the coach", example = "Mike", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Имя тренера", example = "Дмитрий", requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
     @NotBlank(message = "Surname is required")
     @Size(min = 2, max = 50, message = "Surname must be between 2 and 50 characters")
-    @Schema(description = "Last name of the coach", example = "Babcock", requiredMode = Schema.RequiredMode.REQUIRED)
+    @Schema(description = "Фамилия тренера", example = "Квартальнов", requiredMode = Schema.RequiredMode.REQUIRED)
     private String surname;
 
     @NotNull(message = "Age is required")
     @Min(value = 18, message = "Coach must be at least 18 years old")
     @Max(value = 80, message = "Coach cannot be older than 80 years")
-    @Schema(description = "Age of the coach in years", example = "45", minimum = "18", maximum = "80")
+    @Schema(description = "Возраст тренера", example = "45", minimum = "18", maximum = "80")
     private Integer age;
 
-    @Size(max = 100, message = "Tactic description cannot exceed 100 characters")
-    @Schema(description = "Coach's preferred tactical approach", example = "Offensive pressure system")
+    @Size(max = 255, message = "Tactic description cannot exceed 255 characters")
+    @Schema(description = "Предпочитаемая тактика тренера", example = "Гегенпрессинг")
     private String tactic;
 
     @NotNull(message = "Team ID is required")
     @Positive(message = "Team ID must be positive")
-    @Schema(description = "ID of the team the coach manages", example = "1",
+    @Schema(description = "Идентификатор команды тренера", example = "1",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private Long teamId;
 }

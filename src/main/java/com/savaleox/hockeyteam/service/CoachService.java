@@ -47,6 +47,12 @@ public class CoachService {
 
     @Transactional
     public CoachResponseDto create(CoachRequestDto dto) {
+        List<Coach> existingCoaches = coachRepository.findByTeamId(dto.getTeamId());
+        if (!existingCoaches.isEmpty()) {
+            throw new IllegalStateException(
+                    "Team " + dto.getTeamId() + " already has a coach"
+            );
+        }
         Coach coach = coachMapper.toEntity(dto);
         coach.setTeam(teamRepository.getById(dto.getTeamId()));
         coach.setAge(dto.getAge());

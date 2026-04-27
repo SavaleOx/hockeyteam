@@ -9,21 +9,21 @@ import lombok.Setter;
 @Schema(description = "Response DTO for coach data")
 public class CoachResponseDto {
 
-    @Schema(description = "Unique identifier of the coach", example = "1")
+    @Schema(description = "Уникальный идентификатор тренера", example = "1")
     private Long id;
 
-    @Schema(description = "First name of the coach", example = "Mike")
+    @Schema(description = "Имя тренера", example = "Дмитрий")
     private String name;
 
-    @Schema(description = "Last name of the coach", example = "Babcock")
+    @Schema(description = "Фамилия тренера", example = "Квартальнов")
     private String surname;
 
-    @Schema(description = "Age of the coach in years", example = "45")
+    @Schema(description = "Возраст тренера", example = "45")
     private Integer age;
 
-    @Schema(description = "Coach's preferred tactical approach", example = "Offensive pressure system")
+    @Schema(description = "Предпочитаемая тактика", example = "гегенпрессинг")
     private String tactic;
 
-    @Schema(description = "Name of the team the coach manages", example = "Victoria Maple Leafs")
+    @Schema(description = "Название команды тренера", example = "Динамо")
     private String teamName;
 }

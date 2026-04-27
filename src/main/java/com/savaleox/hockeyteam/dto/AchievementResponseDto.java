@@ -9,12 +9,12 @@ import lombok.Setter;
 @Schema(description = "Response DTO for achievement data")
 public class AchievementResponseDto {
 
-    @Schema(description = "Unique identifier of the achievement", example = "1")
+    @Schema(description = "Уникальный id достижения", example = "1")
     private Long id;
 
-    @Schema(description = "Name of the achievement", example = "Stanley Cup Champion")
+    @Schema(description = "Название достижения", example = "Обладатель кубка Гагарина")
     private String name;
 
-    @Schema(description = "Detailed description of the achievement", example = "Won the NHL Stanley Cup championship")
+    @Schema(description = "Описание достижения", example = "Выиграть континентальную хоккейную лигу")
     private String description;
 }

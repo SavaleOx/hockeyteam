@@ -11,32 +11,39 @@ import lombok.Setter;
 @Schema(description = "Search criteria for filtering players")
 public class PlayerSearchCriteria {
 
-    @Schema(description = "Filter by player ID", example = "1", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Фильтр конкретного id игрока", example = "1",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Long playerId;
 
-    @Schema(description = "Filter by player age", example = "25", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Фильтрация по конкретному возрасту", example = "25",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer playerAge;
 
-    @Schema(description = "Filter by jersey number", example = "97", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Фильтрация по конкретног=му игровому номеру", example = "97",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer playerNumber;
 
-    @Schema(description = "Filter by team name", example = "Victoria Maple Leafs",
+    @Schema(description = "Фильтрация по определённой команде", example = "Victoria Maple Leafs",
             requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private String teamName;
 
-    @Schema(description = "Filter by playing position", example = "FORWARD",
+    @Schema(description = "Фильтрация по игровой позиции", example = "FORWARD",
             allowableValues = {"GOALKEEPER", "DEFENDER", "FORWARD"})
     private String playerPosition;
 
-    @Schema(description = "Minimum goals scored", example = "10", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Фильтрация по минимуму забитых шайб", example = "10",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer minGoals;
 
-    @Schema(description = "Maximum goals scored", example = "30", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Фильтрация по смаксимуму забитых шайб", example = "30",
+            requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer maxGoals;
 
-    @Schema(description = "Minimum assists made", example = "15", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Фильтрация по минимальному количеству отданных ассистов",
+            example = "15", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer minAssists;
 
-    @Schema(description = "Maximum assists made", example = "40", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
+    @Schema(description = "Фильтрация по максимальному количеству отданных ассистов",
+            example = "40", requiredMode = Schema.RequiredMode.NOT_REQUIRED)
     private Integer maxAssists;
 }

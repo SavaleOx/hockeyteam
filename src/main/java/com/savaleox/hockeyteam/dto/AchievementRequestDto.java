@@ -12,12 +12,12 @@ import lombok.Setter;
 public class AchievementRequestDto {
 
     @NotBlank(message = "Achievement name is required")
-    @Size(min = 3, max = 100, message = "Achievement name must be between 3 and 100 characters")
-    @Schema(description = "Name of the achievement", example = "Stanley Cup Champion",
+    @Size(min = 3, max = 255, message = "Achievement name must be between 3 and 255 characters")
+    @Schema(description = "Название достижения", example = "Обладатель кубка Гагарина",
             requiredMode = Schema.RequiredMode.REQUIRED)
     private String name;
 
-    @Size(max = 500, message = "Description cannot exceed 500 characters")
-    @Schema(description = "Detailed description of the achievement", example = "Won the NHL Stanley Cup championship")
+    @Size(max = 255, message = "Description cannot exceed 255 characters")
+    @Schema(description = "Описание достижения", example = "Выиграть континентальную хоккейную лигу")
     private String description;
 }

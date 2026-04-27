@@ -14,19 +14,19 @@ import java.util.Map;
 @Schema(description = "Standard error response format")
 public class ErrorResponseDto {
 
-    @Schema(description = "Timestamp of the error", example = "2026-04-24T10:30:45.123")
+    @Schema(description = "Время ошибки", example = "2026-04-24T10:30:45.123")
     private String timestamp;
 
-    @Schema(description = "HTTP status code", example = "400")
+    @Schema(description = "HTTP статус ошибки", example = "409")
     private int status;
 
-    @Schema(description = "Error type", example = "Validation Failed")
+    @Schema(description = "Тип ошибки", example = "Conflict")
     private String error;
 
-    @Schema(description = "Human-readable error message", example = "Invalid input data. Please check the errors.")
+    @Schema(description = "Сообщение об ошибке", example = "Неверный ввод данных.")
     private String message;
 
-    @Schema(description = "Request path that caused the error", example = "/players")
+    @Schema(description = "Путь возникновения ошибки", example = "/players")
     private String path;
 
     @Schema(description = "Detailed validation errors per field")

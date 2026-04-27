@@ -3,6 +3,7 @@ package com.savaleox.hockeyteam.controller;
 import com.savaleox.hockeyteam.dto.TeamRequestDto;
 import com.savaleox.hockeyteam.dto.TeamResponseDto;
 import com.savaleox.hockeyteam.service.TeamService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/teams")
+@Tag(name = "Команды", description = "эндпоинт для манипуляций командами")
 public class TeamController {
     private final TeamService teamService;
 

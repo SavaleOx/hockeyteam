@@ -1,9 +1,12 @@
 package com.savaleox.hockeyteam.controller;
 
+import com.savaleox.hockeyteam.dto.AchievementResponseDto;
 import com.savaleox.hockeyteam.dto.PlayerRequestDto;
 import com.savaleox.hockeyteam.dto.PlayerResponseDto;
 import com.savaleox.hockeyteam.dto.PlayerSearchCriteria;
 import com.savaleox.hockeyteam.service.PlayerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +26,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/players")
+@Tag(name = "Игроки", description = "эндпоинт для манипуляций над игроками")
 public class PlayerController {
     private final PlayerService playerService;
 
@@ -88,5 +92,36 @@ public class PlayerController {
             @ModelAttribute PlayerSearchCriteria criteria,
             Pageable pageable) {
         return playerService.searchPlayersNative(criteria, pageable);
+    }
+
+    @PostMapping("/{playerId}/achievements/{achievementId}")
+    @Operation(summary = "Add achievement to player")
+    public PlayerResponseDto addAchievement(
+            @PathVariable Long playerId,
+            @PathVariable Long achievementId) {
+        return playerService.addAchievement(playerId, achievementId);
+    }
+
+    @DeleteMapping("/{playerId}/achievements/{achievementId}")
+    @Operation(summary = "Remove achievement from player")
+    public PlayerResponseDto removeAchievement(
+            @PathVariable Long playerId,
+            @PathVariable Long achievementId) {
+        return playerService.removeAchievement(playerId, achievementId);
+    }
+
+    @GetMapping("/{playerId}/achievements")
+    @Operation(summary = "Get all achievements of a player")
+    public List<AchievementResponseDto> getPlayerAchievements(
+            @PathVariable Long playerId) {
+        return playerService.getPlayerAchievements(playerId);
+    }
+
+    @PutMapping("/{playerId}/achievements")
+    @Operation(summary = "Set achievements for player (replaces all)")
+    public PlayerResponseDto setAchievements(
+            @PathVariable Long playerId,
+            @RequestBody List<Long> achievementIds) {
+        return playerService.setAchievements(playerId, achievementIds);
     }
 }

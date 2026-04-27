@@ -1,40 +1,52 @@
 package com.savaleox.hockeyteam.service;
 
-import ch.qos.logback.classic.Logger;
 import com.savaleox.hockeyteam.cache.SearchCacheKey;
 import com.savaleox.hockeyteam.cache.SearchCacheManager;
+import com.savaleox.hockeyteam.dto.AchievementResponseDto;
 import com.savaleox.hockeyteam.dto.PlayerRequestDto;
 import com.savaleox.hockeyteam.dto.PlayerResponseDto;
 import com.savaleox.hockeyteam.dto.PlayerSearchCriteria;
+import com.savaleox.hockeyteam.mapper.AchievementMapper;
 import com.savaleox.hockeyteam.mapper.PlayerMapper;
+import com.savaleox.hockeyteam.model.entity.Achievement;
 import com.savaleox.hockeyteam.model.entity.Player;
 import com.savaleox.hockeyteam.model.entity.Team;
 import com.savaleox.hockeyteam.model.enums.Position;
+import com.savaleox.hockeyteam.repository.AchievementRepository;
 import com.savaleox.hockeyteam.repository.PlayerRepository;
 import com.savaleox.hockeyteam.repository.TeamRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.savaleox.hockeyteam.exceptions.ResourceNotFoundException;
 
+import java.util.HashSet;
 import java.util.List;
 
+@Slf4j
 @Service
 public class PlayerService {
     private final SearchCacheManager cacheManager;
     private final PlayerRepository playerRepository;
     private final TeamRepository teamRepository;
     private final PlayerMapper playerMapper;
-    private Logger log;
+    private final AchievementRepository achievementRepository;
+    private final AchievementMapper achievementMapper;
 
-    public PlayerService(SearchCacheManager cacheManager, PlayerRepository playerRepository,
+    public PlayerService(SearchCacheManager cacheManager,
+                         PlayerRepository playerRepository,
                          TeamRepository teamRepository,
-                         PlayerMapper playerMapper) {
+                         PlayerMapper playerMapper,
+                         AchievementRepository achievementRepository,
+                         AchievementMapper achievementMapper) {
         this.cacheManager = cacheManager;
         this.playerRepository = playerRepository;
         this.teamRepository = teamRepository;
         this.playerMapper = playerMapper;
+        this.achievementRepository = achievementRepository;
+        this.achievementMapper = achievementMapper;
     }
 
     public List<PlayerResponseDto> getAll() {
@@ -203,5 +215,89 @@ public class PlayerService {
 
     public void invalidateSearchCache() {
         cacheManager.invalidateAll();
+    }
+
+    @Transactional
+    public PlayerResponseDto addAchievement(Long playerId, Long achievementId) {
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+
+        Achievement achievement = achievementRepository.findById(achievementId)
+                .orElseThrow(() -> new ResourceNotFoundException("Achievement", achievementId));
+
+        if (player.getAchievements().contains(achievement)) {
+            throw new IllegalStateException(
+                    String.format("Player %d already has achievement '%s'", playerId, achievement.getName())
+            );
+        }
+
+        player.getAchievements().add(achievement);
+        achievement.getPlayers().add(player);
+
+        playerRepository.save(player);
+        invalidateSearchCache();
+
+        log.info("Added achievement '{}' to player {}", achievement.getName(), player.getId());
+        return playerMapper.toResponseDto(player);
+    }
+
+    @Transactional
+    public PlayerResponseDto removeAchievement(Long playerId, Long achievementId) {
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+
+        Achievement achievement = achievementRepository.findById(achievementId)
+                .orElseThrow(() -> new ResourceNotFoundException("Achievement", achievementId));
+
+        if (!player.getAchievements().contains(achievement)) {
+            throw new IllegalStateException(
+                    String.format("Player %d doesn't have achievement '%s'", playerId, achievement.getName())
+            );
+        }
+
+        player.getAchievements().remove(achievement);
+        achievement.getPlayers().remove(player);
+
+        playerRepository.save(player);
+        invalidateSearchCache();
+
+        log.info("Removed achievement '{}' from player {}", achievement.getName(), player.getId());
+        return playerMapper.toResponseDto(player);
+    }
+
+    public List<AchievementResponseDto> getPlayerAchievements(Long playerId) {
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+
+        return player.getAchievements().stream()
+                .map(achievementMapper::toResponseDto)
+                .toList();
+    }
+
+    @Transactional
+    public PlayerResponseDto setAchievements(Long playerId, List<Long> achievementIds) {
+        Player player = playerRepository.findById(playerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Player", playerId));
+
+        List<Achievement> newAchievements = achievementRepository.findAllById(achievementIds);
+
+        if (newAchievements.size() != achievementIds.size()) {
+            throw new IllegalArgumentException("One or more achievements not found");
+        }
+
+        for (Achievement achievement : player.getAchievements()) {
+            achievement.getPlayers().remove(player);
+        }
+
+        player.setAchievements(new HashSet<>(newAchievements));
+        for (Achievement achievement : newAchievements) {
+            achievement.getPlayers().add(player);
+        }
+
+        playerRepository.save(player);
+        invalidateSearchCache();
+
+        log.info("Set {} achievements for player {}", newAchievements.size(), player.getId());
+        return playerMapper.toResponseDto(player);
     }
 }

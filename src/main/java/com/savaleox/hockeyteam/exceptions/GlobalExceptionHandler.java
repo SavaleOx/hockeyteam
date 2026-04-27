@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -91,6 +92,55 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseDto> handleDataIntegrityViolation(
+            DataIntegrityViolationException ex,
+            HttpServletRequest request) {
+
+        log.warn("Data integrity violation: {}", ex.getMessage());
+
+        String message = "Operation failed due to data conflict";
+
+        String cause = ex.getMostSpecificCause().getMessage();
+        if (cause.contains("unique") || cause.contains("constraint")) {
+            if (cause.contains("achievements")) {
+                message = "Achievement with this name already exists";
+            } else if (cause.contains("coaches") || cause.contains("team_id")) {
+                message = "Team already has a coach assigned";
+            } else {
+                message = "Duplicate entry detected: " + cause;
+            }
+        }
+
+        ErrorResponseDto response = buildErrorResponse(
+                HttpStatus.CONFLICT,
+                "Conflict",
+                message,
+                request,
+                null
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ErrorResponseDto> handleIllegalState(
+            IllegalStateException ex,
+            HttpServletRequest request) {
+
+        log.warn("Conflict detected: {}", ex.getMessage());
+
+        ErrorResponseDto response = buildErrorResponse(
+                HttpStatus.CONFLICT,
+                "Conflict",
+                ex.getMessage(),
+                request,
+                null
+        );
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
     @ExceptionHandler(NoSuchElementException.class)

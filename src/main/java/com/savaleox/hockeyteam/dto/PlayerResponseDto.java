@@ -9,30 +9,30 @@ import lombok.Setter;
 @Schema(description = "Response DTO for player data")
 public class PlayerResponseDto {
 
-    @Schema(description = "Unique identifier of the player", example = "1")
+    @Schema(description = "Идентификатор игрока", example = "1")
     private Long id;
 
-    @Schema(description = "Full name of the player (name + surname)", example = "Connor McDavid")
+    @Schema(description = "Полное имя игрока (имя + фамилия)", example = "Виталий Пинчук")
     private String fullName;
 
-    @Schema(description = "Player's jersey number", example = "97")
+    @Schema(description = "Игровой номер", example = "97")
     private Integer number;
 
-    @Schema(description = "Age of the player in years", example = "25")
+    @Schema(description = "Возраст игрока", example = "25")
     private Integer age;
 
-    @Schema(description = "Total goals scored in the current season", example = "15")
+    @Schema(description = "Количество голов забитых за карьеру", example = "15")
     private Integer goals;
 
-    @Schema(description = "Total assists made in the current season", example = "25")
+    @Schema(description = "Количество ассистов отданных за карьеру", example = "25")
     private Integer assists;
 
-    @Schema(description = "Total points (goals + assists) in the current season", example = "40")
+    @Schema(description = "Количество очков заработанных за карьеру (голы + ассисты)", example = "40")
     private Integer points;
 
-    @Schema(description = "Name of the team the player belongs to", example = "Victoria Maple Leafs")
+    @Schema(description = "Название команды игрока", example = "Victoria Maple Leafs")
     private String teamName;
 
-    @Schema(description = "Playing position", example = "FORWARD")
+    @Schema(description = "Игровая позиция", example = "FORWARD")
     private String positionName;
 }

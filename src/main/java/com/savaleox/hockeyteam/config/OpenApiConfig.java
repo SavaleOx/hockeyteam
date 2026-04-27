@@ -13,7 +13,8 @@ import org.springframework.context.annotation.Configuration;
                 title = "Hockey API",
                 version = "v1",
                 description = "API for teams, players, their statistics and achievements",
-                contact = @Contact(name = "Hockey Team"),
+                contact = @Contact(name = "SavaleOx",
+                url = "https://github.com/SavaleOx"),
                 license = @License(name = "Internal")
         )
 )

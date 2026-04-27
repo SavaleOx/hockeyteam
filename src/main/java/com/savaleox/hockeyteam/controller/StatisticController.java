@@ -3,6 +3,7 @@ package com.savaleox.hockeyteam.controller;
 import com.savaleox.hockeyteam.dto.StatisticRequestDto;
 import com.savaleox.hockeyteam.dto.StatisticResponseDto;
 import com.savaleox.hockeyteam.service.StatisticService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/statistics")
+@Tag(name = "Статистика", description = "эндпоинт для манипуляций статистикой")
 public class StatisticController {
     private final StatisticService statisticService;
 

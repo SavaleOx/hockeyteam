@@ -3,6 +3,7 @@ package com.savaleox.hockeyteam.controller;
 import com.savaleox.hockeyteam.dto.AchievementRequestDto;
 import com.savaleox.hockeyteam.dto.AchievementResponseDto;
 import com.savaleox.hockeyteam.service.AchievementService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/achievements")
+@Tag(name = "Достижения", description = "эндпоинт для манипуляций над достижениями")
 public class AchievementController {
     private final AchievementService achievementService;
 
