@@ -88,17 +88,18 @@ public class CoachService {
 
         Long newTeamId = dto.getTeamId();
         if (newTeamId != null) {
-            Team newTeam = teamRepository.findById(newTeamId)
-                    .orElseThrow();
-            if (coach.getTeam() != null && !coach.getTeam().getId().equals(newTeamId)) {
-                Team oldTeam = coach.getTeam();
-                oldTeam.setCoach(null);
-                teamRepository.save(oldTeam);
+            if (coach.getTeam() == null || !coach.getTeam().getId().equals(newTeamId)) {
+                if (coach.getTeam() != null) {
+                    Team oldTeam = coach.getTeam();
+                    oldTeam.setCoach(null);
+                    teamRepository.save(oldTeam);
+                }
+                Team newTeam = teamRepository.findById(newTeamId)
+                        .orElseThrow();
+                coach.setTeam(newTeam);
+                newTeam.setCoach(coach);
+                teamRepository.save(newTeam);
             }
-
-            coach.setTeam(newTeam);
-            newTeam.setCoach(coach);
-            teamRepository.save(newTeam);
         } else {
             if (coach.getTeam() != null) {
                 Team oldTeam = coach.getTeam();
@@ -131,17 +132,18 @@ public class CoachService {
         }
 
         if (dto.getTeamId() != null) {
-            Team newTeam = teamRepository.findById(dto.getTeamId())
-                    .orElseThrow();
-            if (coach.getTeam() != null && !coach.getTeam().getId().equals(newTeam.getId())) {
-                Team oldTeam = coach.getTeam();
-                oldTeam.setCoach(null);
-                teamRepository.save(oldTeam);
+            if (coach.getTeam() == null || !coach.getTeam().getId().equals(dto.getTeamId())) {
+                Team newTeam = teamRepository.findById(dto.getTeamId())
+                        .orElseThrow();
+                if (coach.getTeam() != null) {
+                    Team oldTeam = coach.getTeam();
+                    oldTeam.setCoach(null);
+                    teamRepository.save(oldTeam);
+                }
+                coach.setTeam(newTeam);
+                newTeam.setCoach(coach);
+                teamRepository.save(newTeam);
             }
-
-            coach.setTeam(newTeam);
-            newTeam.setCoach(coach);
-            teamRepository.save(newTeam);
         }
 
         Coach saved = coachRepository.save(coach);

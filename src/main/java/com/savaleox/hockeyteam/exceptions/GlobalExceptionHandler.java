@@ -18,6 +18,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
@@ -253,5 +254,31 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ExceptionHandler(PartialBulkCreationException.class)
+    public ResponseEntity<ErrorResponseDto> handlePartialBulkCreation(
+            PartialBulkCreationException ex,
+            HttpServletRequest request
+    ) {
+        Map<String, String> details = new LinkedHashMap<>();
+        details.put("successCount", String.valueOf(ex.getSuccessCount()));
+        details.put("failureCount", String.valueOf(ex.getFailureCount()));
+        ex.getFailures().forEach((index, message) ->
+                details.put("failure_at_index_" + index, message)
+        );
+
+        log.warn("Partial bulk creation failure on path={}, details={}",
+                request.getRequestURI(), details);
+
+        ErrorResponseDto response = buildErrorResponse(
+                HttpStatus.BAD_REQUEST,
+                "Partial Bulk Creation Error",
+                ex.getMessage(),
+                request,
+                details
+        );
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }

@@ -1,11 +1,15 @@
 package com.savaleox.hockeyteam.controller;
 
+import com.savaleox.hockeyteam.dto.PlayerRequestDto;
+import com.savaleox.hockeyteam.dto.PlayerResponseDto;
 import com.savaleox.hockeyteam.dto.TeamRequestDto;
 import com.savaleox.hockeyteam.dto.TeamResponseDto;
 import com.savaleox.hockeyteam.service.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -64,5 +68,25 @@ public class TeamController {
     @Operation(summary = "Частичное обновление сведений о команде")
     public TeamResponseDto patch(@PathVariable Long id, @RequestBody TeamRequestDto dto) {
         return teamService.patch(id, dto);
+    }
+
+    @PostMapping("/{teamId}/players/bulk")
+    @Operation(summary = "Bulk создание игроков для команды (транзакционно)")
+    public ResponseEntity<List<PlayerResponseDto>> bulkCreatePlayers(
+            @PathVariable Long teamId,
+            @RequestBody List<@Valid PlayerRequestDto> players
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(teamService.bulkCreatePlayers(teamId, players));
+    }
+
+    @PostMapping("/{teamId}/players/bulk/non-transactional")
+    @Operation(summary = "Bulk создание игроков для команды (без транзакции)")
+    public ResponseEntity<List<PlayerResponseDto>> bulkCreatePlayersWithoutTransaction(
+            @PathVariable Long teamId,
+            @RequestBody List<PlayerRequestDto> players
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(teamService.bulkCreatePlayersWithoutTransaction(teamId, players));
     }
 }

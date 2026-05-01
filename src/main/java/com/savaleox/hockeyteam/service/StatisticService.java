@@ -110,6 +110,7 @@ public class StatisticService {
         }
 
         if (dto.getPlayerId() != null && !dto.getPlayerId().equals(player.getId())) {
+            playerRepository.save(player);
             Player newPlayer = playerRepository.findById(dto.getPlayerId())
                     .orElseThrow();
             statistic.setPlayer(newPlayer);
@@ -132,6 +133,8 @@ public class StatisticService {
 
         int oldGoals = statistic.getGoals();
         int oldAssists = statistic.getAssists();
+        player.setGoals(player.getGoals() - oldGoals);
+        player.setAssists(player.getAssists() - oldAssists);
 
         if (dto.getSeason() != null) {
             statistic.setSeason(dto.getSeason());
@@ -146,26 +149,17 @@ public class StatisticService {
             statistic.setAssists(dto.getAssists());
         }
 
-        int deltaGoals = statistic.getGoals() - oldGoals;
-        int deltaAssists = statistic.getAssists() - oldAssists;
-        player.setGoals(player.getGoals() + deltaGoals);
-        player.setAssists(player.getAssists() + deltaAssists);
-
         if (dto.getPlayerId() != null && !dto.getPlayerId().equals(player.getId())) {
-            player.setGoals(player.getGoals() - deltaGoals);
-            player.setAssists(player.getAssists() - deltaAssists);
             playerRepository.save(player);
-
-
             Player newPlayer = playerRepository.findById(dto.getPlayerId())
                     .orElseThrow();
             statistic.setPlayer(newPlayer);
             player = newPlayer;
-            player.setGoals(player.getGoals() + statistic.getGoals());
-            player.setAssists(player.getAssists() + statistic.getAssists());
-        } else {
-            playerRepository.save(player);
         }
+
+        player.setGoals(player.getGoals() + statistic.getGoals());
+        player.setAssists(player.getAssists() + statistic.getAssists());
+        playerRepository.save(player);
 
         Statistic saved = statisticRepository.save(statistic);
         playerService.invalidateSearchCache();
