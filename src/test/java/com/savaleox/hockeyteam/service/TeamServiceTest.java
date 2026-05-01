@@ -299,8 +299,11 @@ class TeamServiceTest {
 
     @Test
     void bulkCreatePlayers_EmptyList_ShouldThrowException() {
+        List<PlayerRequestDto> emptyIds = List.of();
+
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of()));
+                () -> teamService.bulkCreatePlayers(1L, emptyIds)
+        );
     }
 
     @Test
@@ -313,8 +316,11 @@ class TeamServiceTest {
     void bulkCreatePlayers_TeamNotFound_ShouldThrowException() {
         when(teamRepository.findById(99L)).thenReturn(Optional.empty());
 
+        List<PlayerRequestDto> players = List.of(playerRequestDto);
+
         assertThrows(NoSuchElementException.class,
-                () -> teamService.bulkCreatePlayers(99L, List.of(playerRequestDto)));
+                () -> teamService.bulkCreatePlayers(99L, players)
+        );
     }
 
     @Test
@@ -323,8 +329,11 @@ class TeamServiceTest {
 
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
 
+        List<PlayerRequestDto> players = List.of(playerRequestDto);
+
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(playerRequestDto)));
+                () -> teamService.bulkCreatePlayers(1L, players)
+        );
     }
 
     @Test
@@ -342,138 +351,125 @@ class TeamServiceTest {
     @Test
     void bulkCreatePlayers_InvalidName_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto(null, "Smith", 11);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_BlankName_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("", "Smith", 11);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_InvalidSurname_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", null, 11);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_InvalidNumberTooLow_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 0);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_InvalidNumberTooHigh_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 100);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_NullNumber_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", null);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_InvalidAgeTooYoung_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 11);
         invalidDto.setAge(15);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_InvalidAgeTooOld_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 11);
         invalidDto.setAge(51);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_NullAge_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 11);
         invalidDto.setAge(null);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_InvalidPosition_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 11);
         invalidDto.setPosition("INVALID");
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_NegativeGoals_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 11);
         invalidDto.setGoals(-1);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_NullGoals_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 11);
         invalidDto.setGoals(null);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_NegativeAssists_ShouldThrowException() {
         PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 11);
         invalidDto.setAssists(-1);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(invalidDto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(invalidDto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test

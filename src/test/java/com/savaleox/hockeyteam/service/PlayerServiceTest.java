@@ -693,17 +693,22 @@ class PlayerServiceTest {
     void setAchievements_SomeNotFound_ShouldThrowException() {
         when(playerRepository.findById(1L)).thenReturn(Optional.of(player));
         when(achievementRepository.findAllById(List.of(1L, 99L))).thenReturn(List.of(achievement));
+        List<Long> achievementIds = List.of(1L, 99L);
 
         assertThrows(IllegalArgumentException.class,
-                () -> playerService.setAchievements(1L, List.of(1L, 99L)));
+                () -> playerService.setAchievements(1L, achievementIds)
+        );
     }
 
     @Test
     void setAchievements_PlayerNotFound_ShouldThrowException() {
         when(playerRepository.findById(99L)).thenReturn(Optional.empty());
 
+        List<Long> achievementIds = List.of(1L);
+
         assertThrows(ResourceNotFoundException.class,
-                () -> playerService.setAchievements(99L, List.of(1L)));
+                () -> playerService.setAchievements(99L, achievementIds)
+        );
     }
 
     @Test
