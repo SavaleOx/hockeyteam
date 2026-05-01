@@ -13,4 +13,7 @@ class HockeyApplicationTests {
     static class TestApplication {
     }
 
+    @Test
+    void contextLoads() {
+    }
 }
