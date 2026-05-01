@@ -12,11 +12,16 @@ class HockeyApplicationTests {
 
     @SpringBootConfiguration
     @EnableAutoConfiguration(exclude = {
-            DataSourceAutoConfiguration.class,
-            HibernateJpaAutoConfiguration.class
+        DataSourceAutoConfiguration.class,
+        HibernateJpaAutoConfiguration.class
     })
     static class TestApplication {
     }
 
-
+    @Test
+    void contextLoads() {
+        for (int i = 0; i < 5; i++) {
+            ;
+        }
+    }
 }
