@@ -657,7 +657,7 @@ class TeamServiceTest {
     private PlayerResponseDto createResponseDto(String name, String surname, Integer number) {
         PlayerResponseDto dto = new PlayerResponseDto();
         dto.setId(number.longValue());
-        dto.setFullName(name);
+        dto.setFullName(name + surname);
         dto.setNumber(number);
         dto.setAge(25);
         dto.setPositionName("FORWARD");

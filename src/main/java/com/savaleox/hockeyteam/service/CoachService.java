@@ -131,19 +131,18 @@ public class CoachService {
             coach.setTactic(dto.getTactic());
         }
 
-        if (dto.getTeamId() != null) {
-            if (coach.getTeam() == null || !coach.getTeam().getId().equals(dto.getTeamId())) {
-                Team newTeam = teamRepository.findById(dto.getTeamId())
-                        .orElseThrow();
-                if (coach.getTeam() != null) {
-                    Team oldTeam = coach.getTeam();
-                    oldTeam.setCoach(null);
-                    teamRepository.save(oldTeam);
-                }
-                coach.setTeam(newTeam);
-                newTeam.setCoach(coach);
-                teamRepository.save(newTeam);
+        if (dto.getTeamId() != null && (coach.getTeam() == null || !coach.getTeam().getId().equals(dto.getTeamId()))) {
+            Team newTeam = teamRepository.findById(dto.getTeamId())
+                    .orElseThrow();
+            if (coach.getTeam() != null) {
+                Team oldTeam = coach.getTeam();
+                oldTeam.setCoach(null);
+                teamRepository.save(oldTeam);
             }
+            coach.setTeam(newTeam);
+            newTeam.setCoach(coach);
+            teamRepository.save(newTeam);
+
         }
 
         Coach saved = coachRepository.save(coach);

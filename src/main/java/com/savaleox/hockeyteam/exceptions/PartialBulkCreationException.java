@@ -11,7 +11,7 @@ public class PartialBulkCreationException extends RuntimeException {
     private final int successCount;
     private final int failureCount;
     private final Map<Integer, String> failures;
-    private final List<?> successfulResults;
+    private final transient List<?> successfulResults;
 
     public PartialBulkCreationException(
             String message,

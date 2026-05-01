@@ -69,7 +69,7 @@ public class TeamService {
 
     @Transactional
     public void delete(Long id) {
-        Team team = teamRepository.findById(id).orElseThrow();
+        teamRepository.findById(id).orElseThrow();
         playerService.invalidateSearchCache();
         teamRepository.deleteById(id);
     }
@@ -109,8 +109,7 @@ public class TeamService {
 
         log.info("Starting TRANSACTIONAL bulk player creation for teamId={}, size={}", teamId, safePlayers.size());
 
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NoSuchElementException("Team with id " + teamId + " not found"));
+        Team team = teamRepository.findById(teamId).orElseThrow();
 
         Set<Integer> existingNumbers = team.getPlayers().stream()
                 .map(Player::getNumber)
@@ -149,8 +148,7 @@ public class TeamService {
 
         log.info("Starting NON-TRANSACTIONAL bulk player creation for teamId={}, size={}", teamId, safePlayers.size());
 
-        Team team = teamRepository.findById(teamId)
-                .orElseThrow(() -> new NoSuchElementException("Team with id " + teamId + " not found"));
+        Team team = teamRepository.findById(teamId).orElseThrow();
 
         Set<Integer> existingNumbers = team.getPlayers().stream()
                 .map(Player::getNumber)
