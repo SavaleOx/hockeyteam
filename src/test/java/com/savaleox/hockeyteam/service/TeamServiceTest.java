@@ -15,6 +15,9 @@ import com.savaleox.hockeyteam.repository.TeamRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -348,49 +352,23 @@ class TeamServiceTest {
                 () -> teamService.bulkCreatePlayers(1L, players));
     }
 
-    @Test
-    void bulkCreatePlayers_InvalidName_ShouldThrowException() {
-        PlayerRequestDto invalidDto = createValidPlayerDto(null, "Smith", 11);
+    @ParameterizedTest
+    @MethodSource("provideInvalidPlayerInput")
+    void bulkCreatePlayers_InvalidInput_ShouldThrowException(String name, String surname, int number) {
+        PlayerRequestDto invalidDto = createValidPlayerDto(name, surname, number);
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
         List<PlayerRequestDto> players = List.of(invalidDto);
-        assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, players));
+        assertThrows(IllegalArgumentException.class, () -> teamService.bulkCreatePlayers(1L, players));
     }
 
-    @Test
-    void bulkCreatePlayers_BlankName_ShouldThrowException() {
-        PlayerRequestDto invalidDto = createValidPlayerDto("", "Smith", 11);
-        when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-        List<PlayerRequestDto> players = List.of(invalidDto);
-        assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, players));
-    }
-
-    @Test
-    void bulkCreatePlayers_InvalidSurname_ShouldThrowException() {
-        PlayerRequestDto invalidDto = createValidPlayerDto("John", null, 11);
-        when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-        List<PlayerRequestDto> players = List.of(invalidDto);
-        assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, players));
-    }
-
-    @Test
-    void bulkCreatePlayers_InvalidNumberTooLow_ShouldThrowException() {
-        PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 0);
-        when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-        List<PlayerRequestDto> players = List.of(invalidDto);
-        assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, players));
-    }
-
-    @Test
-    void bulkCreatePlayers_InvalidNumberTooHigh_ShouldThrowException() {
-        PlayerRequestDto invalidDto = createValidPlayerDto("John", "Smith", 100);
-        when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-        List<PlayerRequestDto> players = List.of(invalidDto);
-        assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, players));
+    private static Stream<Arguments> provideInvalidPlayerInput() {
+        return Stream.of(
+                Arguments.of(null, "Smith", 11),
+                Arguments.of("", "Smith", 11),
+                Arguments.of("John", null, 11),
+                Arguments.of("John", "Smith", 0),
+                Arguments.of("John", "Smith", 100)
+        );
     }
 
     @Test
