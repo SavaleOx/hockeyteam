@@ -20,7 +20,7 @@ spring:
 
 app:
   async:
-    replenish-delay-ms: ${APP_ASYNC_REPLENISH_DELAY_MS:15000}
+    statistic-delay-ms: ${APP_ASYNC_STATISTIC_DELAY_MS:10}
 
 
 management:
