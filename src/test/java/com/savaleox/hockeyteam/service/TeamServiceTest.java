@@ -534,16 +534,17 @@ class TeamServiceTest {
 
     @Test
     void bulkCreatePlayersWithoutTransaction_EmptyList_ShouldThrowException() {
+        List<PlayerRequestDto> emptyList = List.of();
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayersWithoutTransaction(1L, List.of()));
+                () -> teamService.bulkCreatePlayersWithoutTransaction(1L, emptyList));
     }
 
     @Test
     void bulkCreatePlayersWithoutTransaction_TeamNotFound_ShouldThrowException() {
         when(teamRepository.findById(99L)).thenReturn(Optional.empty());
-
+        List<PlayerRequestDto> players = List.of(playerRequestDto);
         assertThrows(NoSuchElementException.class,
-                () -> teamService.bulkCreatePlayersWithoutTransaction(99L, List.of(playerRequestDto)));
+                () -> teamService.bulkCreatePlayersWithoutTransaction(99L, players));
     }
 
     @Test
@@ -644,10 +645,9 @@ class TeamServiceTest {
     @Test
     void bulkCreatePlayers_NonEmptyList_ShouldNotThrowOnOptionalCheck() {
         when(teamRepository.findById(1L)).thenReturn(Optional.empty());
-
+        List<PlayerRequestDto> players = List.of(playerRequestDto);
         assertThrows(NoSuchElementException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(playerRequestDto)));
-
+                () -> teamService.bulkCreatePlayers(1L, players));
         verifyNoInteractions(playerMapper);
     }
 
@@ -655,34 +655,30 @@ class TeamServiceTest {
     void bulkCreatePlayers_NullGoals_ShouldThrowIllegalArgumentException() {
         PlayerRequestDto dto = createValidPlayerDto("John", "Smith", 11);
         dto.setGoals(null);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(dto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(dto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayers_NullAssists_ShouldThrowIllegalArgumentException() {
         PlayerRequestDto dto = createValidPlayerDto("John", "Smith", 11);
         dto.setAssists(null);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(dto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(dto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayersWithoutTransaction_NullGoals_ShouldThrowPartialBulkException() {
         PlayerRequestDto dto = createValidPlayerDto("John", "Doe", 10);
         dto.setGoals(null);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(dto);
         PartialBulkCreationException exception = assertThrows(PartialBulkCreationException.class,
-                () -> teamService.bulkCreatePlayersWithoutTransaction(1L, List.of(dto)));
-
+                () -> teamService.bulkCreatePlayersWithoutTransaction(1L, players));
         assertEquals(0, exception.getSuccessCount());
         assertEquals(1, exception.getFailureCount());
         assertTrue(exception.getFailures().get(0).contains("Goals cannot be negative"));
@@ -692,12 +688,10 @@ class TeamServiceTest {
     void bulkCreatePlayersWithoutTransaction_NegativeAssists_ShouldThrowPartialBulkException() {
         PlayerRequestDto dto = createValidPlayerDto("John", "Doe", 10);
         dto.setAssists(-5);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(dto);
         PartialBulkCreationException exception = assertThrows(PartialBulkCreationException.class,
-                () -> teamService.bulkCreatePlayersWithoutTransaction(1L, List.of(dto)));
-
+                () -> teamService.bulkCreatePlayersWithoutTransaction(1L, players));
         assertEquals(0, exception.getSuccessCount());
         assertEquals(1, exception.getFailureCount());
         assertTrue(exception.getFailures().get(0).contains("Assists cannot be negative"));
@@ -707,18 +701,18 @@ class TeamServiceTest {
     void bulkCreatePlayers_BlankSurname_ShouldThrowException() {
         PlayerRequestDto dto = createValidPlayerDto("John", "   ", 11);
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
+        List<PlayerRequestDto> players = List.of(dto);
         assertThrows(IllegalArgumentException.class,
-                () -> teamService.bulkCreatePlayers(1L, List.of(dto)));
+                () -> teamService.bulkCreatePlayers(1L, players));
     }
 
     @Test
     void bulkCreatePlayersWithoutTransaction_BlankSurname_ShouldThrowPartialBulkException() {
         PlayerRequestDto dto = createValidPlayerDto("John", "", 10);
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
-
+        List<PlayerRequestDto> players = List.of(dto);
         PartialBulkCreationException exception = assertThrows(PartialBulkCreationException.class,
-                () -> teamService.bulkCreatePlayersWithoutTransaction(1L, List.of(dto)));
-
+                () -> teamService.bulkCreatePlayersWithoutTransaction(1L, players));
         assertEquals(0, exception.getSuccessCount());
         assertEquals(1, exception.getFailureCount());
         assertTrue(exception.getFailures().get(0).contains("Player surname is required"));
