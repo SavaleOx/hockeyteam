@@ -112,15 +112,12 @@ class AsyncStatisticWorkerServiceTest {
     void runTask_shouldHandleInterruptedException() throws Exception {
         InterruptedException interruptedException = new InterruptedException("sleep interrupted");
         doThrow(interruptedException).when(service).doSleep(anyLong());
-
         CompletableFuture<Void> future = service.runTask("task-interrupt", 1L, 2026, 15, 25, 70);
-
         ExecutionException exception = assertThrows(ExecutionException.class, future::get);
         assertTrue(exception.getCause() instanceof InterruptedException);
-
         verify(asyncTaskRegistryService).markRunning("task-interrupt", "Расчёт статистики выполняется");
         verify(asyncTaskCounterService).incrementRunning();
-        verify(asyncTaskRegistryService).markFailed(eq("task-interrupt"), eq("Task interrupted"));
+        verify(asyncTaskRegistryService).markFailed("task-interrupt", "Task interrupted");
         verify(asyncTaskCounterService).incrementFailed();
         verify(asyncTaskCounterService).decrementRunning();
     }
@@ -129,15 +126,12 @@ class AsyncStatisticWorkerServiceTest {
     void runTask_shouldHandleGeneralException() throws Exception {
         RuntimeException testException = new RuntimeException("Database connection failed");
         doThrow(testException).when(service).doSleep(anyLong());
-
         CompletableFuture<Void> future = service.runTask("task-exception", 5L, 2025, 10, 20, 60);
-
         ExecutionException exception = assertThrows(ExecutionException.class, future::get);
         assertEquals(testException, exception.getCause());
-
         verify(asyncTaskRegistryService).markRunning("task-exception", "Расчёт статистики выполняется");
         verify(asyncTaskCounterService).incrementRunning();
-        verify(asyncTaskRegistryService).markFailed(eq("task-exception"), eq("Database connection failed"));
+        verify(asyncTaskRegistryService).markFailed("task-exception", "Database connection failed");
         verify(asyncTaskCounterService).incrementFailed();
         verify(asyncTaskCounterService).decrementRunning();
     }
