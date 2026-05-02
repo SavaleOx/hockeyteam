@@ -12,6 +12,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -74,10 +75,11 @@ class AsyncStatisticWorkerServiceTest {
                 .when(asyncTaskRegistryService)
                 .markRunning(anyString(), anyString());
 
-        try {
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             service.runTask("task-fail", 3L, 2024, 5, 10, 50).get();
-        } catch (Exception ignored) {
-        }
+        });
+
+        assertEquals("Test exception", exception.getMessage());
 
         verify(asyncTaskRegistryService).markRunning(eq("task-fail"), eq("Расчёт статистики выполняется"));
         verify(asyncTaskRegistryService, never()).markFailed(anyString(), anyString());
@@ -116,11 +118,8 @@ class AsyncStatisticWorkerServiceTest {
 
         CompletableFuture<Void> future = service.runTask("task-interrupt", 1L, 2026, 15, 25, 70);
 
-        try {
-            future.get();
-        } catch (ExecutionException e) {
-            assertTrue(e.getCause() instanceof InterruptedException);
-        }
+        ExecutionException exception = assertThrows(ExecutionException.class, future::get);
+        assertTrue(exception.getCause() instanceof InterruptedException);
 
         verify(asyncTaskRegistryService).markRunning("task-interrupt", "Расчёт статистики выполняется");
         verify(asyncTaskCounterService).incrementRunning();
@@ -136,11 +135,8 @@ class AsyncStatisticWorkerServiceTest {
 
         CompletableFuture<Void> future = service.runTask("task-exception", 5L, 2025, 10, 20, 60);
 
-        try {
-            future.get();
-        } catch (ExecutionException e) {
-            assertEquals(testException, e.getCause());
-        }
+        ExecutionException exception = assertThrows(ExecutionException.class, future::get);
+        assertEquals(testException, exception.getCause());
 
         verify(asyncTaskRegistryService).markRunning("task-exception", "Расчёт статистики выполняется");
         verify(asyncTaskCounterService).incrementRunning();
