@@ -490,22 +490,17 @@ class TeamServiceTest {
         PlayerRequestDto validDto = createValidPlayerDto("Jane", "Smith", 11);
         PlayerRequestDto invalidDto = createValidPlayerDto(null, "Doe", 10);
         List<PlayerRequestDto> players = List.of(validDto, invalidDto);
-
         Player validPlayer = createPlayer("Jane", "Smith", 11);
         PlayerResponseDto validResponse = createResponseDto("Jane", "Smith", 11);
-
         when(teamRepository.findById(1L)).thenReturn(Optional.of(team));
         when(playerMapper.toEntity(validDto)).thenReturn(validPlayer);
         when(playerRepository.save(validPlayer)).thenReturn(validPlayer);
         when(playerMapper.toResponseDto(validPlayer)).thenReturn(validResponse);
-
         PartialBulkCreationException exception = assertThrows(PartialBulkCreationException.class,
                 () -> teamService.bulkCreatePlayersWithoutTransaction(1L, players));
-
         assertEquals(1, exception.getSuccessCount());
         assertEquals(1, exception.getFailureCount());
-        assertNotNull(exception.getCreatedPlayers());
-        assertNotNull(exception.getFailures());
+        assertTrue(exception.getFailures().containsKey(1));
     }
 
     @Test
@@ -520,10 +515,9 @@ class TeamServiceTest {
 
         PartialBulkCreationException exception = assertThrows(PartialBulkCreationException.class,
                 () -> teamService.bulkCreatePlayersWithoutTransaction(1L, players));
-
         assertEquals(0, exception.getSuccessCount());
         assertEquals(2, exception.getFailureCount());
-        assertTrue(exception.getCreatedPlayers() == 0);
+        assertEquals(0, exception.getCreatedPlayers());
     }
 
     @Test

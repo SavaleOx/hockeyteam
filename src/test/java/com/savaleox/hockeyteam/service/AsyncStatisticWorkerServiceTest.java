@@ -74,14 +74,11 @@ class AsyncStatisticWorkerServiceTest {
         doThrow(new RuntimeException("Test exception"))
                 .when(asyncTaskRegistryService)
                 .markRunning(anyString(), anyString());
-
         RuntimeException exception = assertThrows(RuntimeException.class, () ->
                 service.runTask("task-fail", 3L, 2024, 5, 10, 50)
         );
-
         assertEquals("Test exception", exception.getMessage());
-
-        verify(asyncTaskRegistryService).markRunning(eq("task-fail"), eq("Расчёт статистики выполняется"));
+        verify(asyncTaskRegistryService).markRunning("task-fail", "Расчёт статистики выполняется");
         verify(asyncTaskRegistryService, never()).markFailed(anyString(), anyString());
         verify(asyncTaskCounterService, never()).incrementFailed();
         verify(asyncTaskCounterService, never()).decrementRunning();
