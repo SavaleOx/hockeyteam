@@ -11,16 +11,13 @@ import java.util.concurrent.CompletableFuture;
 @Service
 public class AsyncStatisticWorkerService {
 
-    private final StatisticService statisticService;
     private final AsyncTaskRegistryService asyncTaskRegistryService;
     private final AsyncTaskCounterService asyncTaskCounterService;
     private final long statisticDelayMs;
 
-    public AsyncStatisticWorkerService(StatisticService statisticService,
-                                       AsyncTaskRegistryService asyncTaskRegistryService,
+    public AsyncStatisticWorkerService(AsyncTaskRegistryService asyncTaskRegistryService,
                                        AsyncTaskCounterService asyncTaskCounterService,
                                        AsyncProperties asyncProperties) {
-        this.statisticService = statisticService;
         this.asyncTaskRegistryService = asyncTaskRegistryService;
         this.asyncTaskCounterService = asyncTaskCounterService;
         this.statisticDelayMs = asyncProperties.getStatisticDelayMs();

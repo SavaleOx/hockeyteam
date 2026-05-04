@@ -27,9 +27,6 @@ import static org.mockito.Mockito.when;
 class AsyncStatisticWorkerServiceTest {
 
     @Mock
-    private StatisticService statisticService;
-
-    @Mock
     private AsyncTaskRegistryService asyncTaskRegistryService;
 
     @Mock
@@ -44,7 +41,6 @@ class AsyncStatisticWorkerServiceTest {
     void setUp() {
         when(asyncProperties.getStatisticDelayMs()).thenReturn(100L);
         service = spy(new AsyncStatisticWorkerService(
-                statisticService,
                 asyncTaskRegistryService,
                 asyncTaskCounterService,
                 asyncProperties

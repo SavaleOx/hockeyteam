@@ -1,29 +1,29 @@
-FROM eclipse-temurin:21-jdk AS build
+FROM eclipse-temurin:25-jre
 WORKDIR /app
 
-# Копируем только pom.xml для кеширования зависимостей
-COPY pom.xml .
-RUN apt-get update && apt-get install -y maven && \
-    mvn dependency:go-offline -B
+# Создаём папку для логов
+RUN mkdir -p /app/logs
+# Даём права на запись всем пользователям (или конкретному, под которым работает приложение)
+RUN chmod 777 /app/logs
 
-# Копируем исходники и собираем
-COPY src ./src
-RUN mvn clean package -DskipTests
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends curl \
+    && rm -rf /var/lib/apt/lists/* \
+    && groupadd --system spring \
+    && useradd --system --gid spring --create-home spring
 
-FROM eclipse-temurin:21-jre
-WORKDIR /app
+# Копируем уже собранный JAR из локальной папки target
+# ВАЖНО: JAR должен существовать ДО сборки образа
+COPY target/*.jar app.jar
 
-# Устанавливаем curl для healthcheck
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends curl && \
-    rm -rf /var/lib/apt/lists/* && \
-    groupadd --system spring && \
-    useradd --system --gid spring --create-home spring
-
-COPY --from=build /app/target/*.jar app.jar
-RUN chown spring:spring app.jar && chmod 0444 app.jar
+RUN chown spring:spring /app/app.jar \
+    && chmod 0444 /app/app.jar
 
 USER spring
+
 EXPOSE 8081
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=5 \
+  CMD curl -fsS http://localhost:8081/actuator/health || exit 1
+
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
