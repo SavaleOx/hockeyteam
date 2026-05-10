@@ -21,7 +21,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -126,16 +125,7 @@ class AchievementServiceTest {
         assertEquals(responseDto, result);
         verify(achievementRepository).save(achievement);
     }
-/*
-    @Test
-    void delete_ShouldCallRepository() {
-        doNothing().when(achievementRepository).deleteById(1L);
 
-        achievementService.delete(1L);
-
-        verify(achievementRepository).deleteById(1L);
-    }
-*/
     @Test
     void update_WhenExists_ShouldUpdateAllFields() {
         AchievementRequestDto updateDto = new AchievementRequestDto();

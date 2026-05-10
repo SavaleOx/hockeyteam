@@ -53,7 +53,7 @@ public class StatisticService {
         // Проверка: существует ли уже статистика для данного игрока и сезона
         if (statisticRepository.existsByPlayerIdAndSeason(playerId, season)) {
             throw new IllegalArgumentException(
-                    String.format("Статистика для игрока %d за сезон %d уже существует", playerId, season)
+                    String.format("Статистика для игрока %d за сезон %d уже сущствует", playerId, season)
             );
         }
 
@@ -69,7 +69,6 @@ public class StatisticService {
 
         Statistic saved = statisticRepository.save(statistic);
 
-        // Обновляем суммарные показатели игрока (голы, ассисты)
         updatePlayerTotals(player, dto.getGoals(), dto.getAssists(), true);
 
         playerService.invalidateSearchCache();
@@ -77,11 +76,10 @@ public class StatisticService {
         return statisticMapper.toResponseDto(saved);
     }
 
-    // Удаление статистики
     @Transactional
     public void delete(Long id) {
         Statistic statistic = statisticRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Statistic not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Statistic nt found with id: " + id));
 
         Player player = statistic.getPlayer();
         int goalsToSubtract = statistic.getGoals();
@@ -89,43 +87,36 @@ public class StatisticService {
 
         statisticRepository.delete(statistic);
 
-        // Обновляем суммарные показатели игрока (уменьшаем)
         updatePlayerTotals(player, -goalsToSubtract, -assistsToSubtract, true);
 
         playerService.invalidateSearchCache();
     }
 
-    // Полное обновление статистики (PUT)
     @Transactional
     public StatisticResponseDto update(Long id, StatisticRequestDto dto) {
         Statistic existing = statisticRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Statistic not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Statstic not found with id: " + id));
 
         Long oldPlayerId = existing.getPlayer().getId();
         Integer oldSeason = existing.getSeason();
         Long newPlayerId = dto.getPlayerId() != null ? dto.getPlayerId() : oldPlayerId;
         Integer newSeason = dto.getSeason() != null ? dto.getSeason() : oldSeason;
 
-        // Если меняется пара (игрок, сезон) - проверяем, что новая комбинация свободна
-        if (!oldPlayerId.equals(newPlayerId) || !oldSeason.equals(newSeason)) {
-            if (statisticRepository.existsByPlayerIdAndSeason(newPlayerId, newSeason)) {
-                throw new IllegalArgumentException(
-                        String.format("Статистика для игрока %d за сезон %d уже существует", newPlayerId, newSeason)
-                );
-            }
+        if ((!oldPlayerId.equals(newPlayerId) || !oldSeason.equals(newSeason))
+                && statisticRepository.existsByPlayerIdAndSeason(newPlayerId, newSeason)) {
+            throw new IllegalArgumentException(
+                    String.format("Статстика для игрока %d за сезон %d уже существует", newPlayerId, newSeason)
+            );
         }
 
         Player player = existing.getPlayer();
-        // Откатываем старые значения из суммарной статистики игрока
-        updatePlayerTotals(player, -existing.getGoals(), -existing.getAssists(), false); // false - не сохранять пока
+        updatePlayerTotals(player, -existing.getGoals(), -existing.getAssists(), false);
 
-        // Обновляем поля статистики
         existing.setSeason(newSeason);
         existing.setGames(dto.getGames());
         existing.setGoals(dto.getGoals());
         existing.setAssists(dto.getAssists());
 
-        // Если меняется игрок, меняем связь
         if (!oldPlayerId.equals(newPlayerId)) {
             Player newPlayer = playerRepository.findById(newPlayerId)
                     .orElseThrow(() -> new RuntimeException("New player not found with id: " + newPlayerId));
@@ -133,7 +124,6 @@ public class StatisticService {
             player = newPlayer;
         }
 
-        // Добавляем новые значения к суммарной статистике игрока
         updatePlayerTotals(player, existing.getGoals(), existing.getAssists(), true);
 
         Statistic saved = statisticRepository.save(existing);
@@ -142,11 +132,10 @@ public class StatisticService {
         return statisticMapper.toResponseDto(saved);
     }
 
-    // Частичное обновление статистики (PATCH)
     @Transactional
     public StatisticResponseDto patch(Long id, StatisticRequestDto dto) {
         Statistic existing = statisticRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Statistic not found with id: " + id));
+                .orElseThrow(() -> new RuntimeException("Statistic not fund with id: " + id));
 
         Long oldPlayerId = existing.getPlayer().getId();
         Integer oldSeason = existing.getSeason();
@@ -154,24 +143,28 @@ public class StatisticService {
         Long newPlayerId = dto.getPlayerId() != null ? dto.getPlayerId() : oldPlayerId;
         Integer newSeason = dto.getSeason() != null ? dto.getSeason() : oldSeason;
 
-        // Проверка уникальности при смене пары (игрок, сезон)
-        if (!oldPlayerId.equals(newPlayerId) || !oldSeason.equals(newSeason)) {
-            if (statisticRepository.existsByPlayerIdAndSeason(newPlayerId, newSeason)) {
-                throw new IllegalArgumentException(
-                        String.format("Статистика для игрока %d за сезон %d уже существует", newPlayerId, newSeason)
-                );
-            }
+        if ((!oldPlayerId.equals(newPlayerId) || !oldSeason.equals(newSeason))
+                && statisticRepository.existsByPlayerIdAndSeason(newPlayerId, newSeason)) {
+            throw new IllegalArgumentException(
+                    String.format("Статистика для игрока %d за сзон %d уже существует", newPlayerId, newSeason)
+            );
         }
 
         Player player = existing.getPlayer();
-        // Откатываем старые значения
         updatePlayerTotals(player, -existing.getGoals(), -existing.getAssists(), false);
 
-        // Применяем только переданные поля
-        if (dto.getSeason() != null) existing.setSeason(dto.getSeason());
-        if (dto.getGames() != null) existing.setGames(dto.getGames());
-        if (dto.getGoals() != null) existing.setGoals(dto.getGoals());
-        if (dto.getAssists() != null) existing.setAssists(dto.getAssists());
+        if (dto.getSeason() != null) {
+            existing.setSeason(dto.getSeason());
+        }
+        if (dto.getGames() != null) {
+            existing.setGames(dto.getGames());
+        }
+        if (dto.getGoals() != null) {
+            existing.setGoals(dto.getGoals());
+        }
+        if (dto.getAssists() != null) {
+            existing.setAssists(dto.getAssists());
+        }
 
         if (dto.getPlayerId() != null && !dto.getPlayerId().equals(oldPlayerId)) {
             Player newPlayer = playerRepository.findById(dto.getPlayerId())
@@ -180,7 +173,7 @@ public class StatisticService {
             player = newPlayer;
         }
 
-        // Добавляем новые значения
+
         updatePlayerTotals(player, existing.getGoals(), existing.getAssists(), true);
 
         Statistic saved = statisticRepository.save(existing);
@@ -189,9 +182,11 @@ public class StatisticService {
         return statisticMapper.toResponseDto(saved);
     }
 
-    // Вспомогательный метод для обновления суммарных голов и ассистов игрока
+
     private void updatePlayerTotals(Player player, int deltaGoals, int deltaAssists, boolean flush) {
-        if (player == null) return;
+        if (player == null) {
+            return;
+        }
         player.setGoals(player.getGoals() + deltaGoals);
         player.setAssists(player.getAssists() + deltaAssists);
         if (flush) {

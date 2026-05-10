@@ -12,7 +12,8 @@ public class AchievementPlayersDto {
 
 
 
-    public AchievementPlayersDto(List<PlayerInfoDto> playersWithAchievement, List<PlayerInfoDto> playersWithoutAchievement) {
+    public AchievementPlayersDto(List<PlayerInfoDto> playersWithAchievement,
+                                 List<PlayerInfoDto> playersWithoutAchievement) {
         this.playersWithAchievement = playersWithAchievement;
         this.playersWithoutAchievement = playersWithoutAchievement;
     }

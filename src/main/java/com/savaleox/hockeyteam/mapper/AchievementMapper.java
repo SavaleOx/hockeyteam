@@ -9,8 +9,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface AchievementMapper {
 
-    //AchievementResponseDto toResponseDto(Achievement achievement);
-
     @Mapping(target = "playersCount", expression = "java(achievement.getPlayers().size())")
     AchievementResponseDto toResponseDto(Achievement achievement);
 
