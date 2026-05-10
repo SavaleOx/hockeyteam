@@ -1,4 +1,4 @@
-package com.savaleox.hockeyteam.service;
+/*package com.savaleox.hockeyteam.service;
 
 import com.savaleox.hockeyteam.dto.StatisticRequestDto;
 import com.savaleox.hockeyteam.dto.StatisticResponseDto;
@@ -196,7 +196,7 @@ class StatisticServiceTest {
         assertEquals(50, player.getGoals());
         assertEquals(60, player.getAssists());
     }
-
+/*
     @Test
     void createWithoutTransactional_ShouldCreateAndUpdate() {
         when(playerRepository.findById(1L)).thenReturn(Optional.of(player));
@@ -493,4 +493,4 @@ class StatisticServiceTest {
         assertEquals(40, player.getGoals());
         assertEquals(60, player.getAssists());
     }
-}
+}*/

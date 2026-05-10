@@ -17,4 +17,6 @@ public interface StatisticRepository extends JpaRepository<Statistic, Long> {
 
     @EntityGraph(attributePaths = {"player"})
     Optional<Statistic> findById(Long id);
+
+    boolean existsByPlayerIdAndSeason(Long playerId, Integer season);
 }

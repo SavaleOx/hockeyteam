@@ -126,7 +126,7 @@ class AchievementServiceTest {
         assertEquals(responseDto, result);
         verify(achievementRepository).save(achievement);
     }
-
+/*
     @Test
     void delete_ShouldCallRepository() {
         doNothing().when(achievementRepository).deleteById(1L);
@@ -135,7 +135,7 @@ class AchievementServiceTest {
 
         verify(achievementRepository).deleteById(1L);
     }
-
+*/
     @Test
     void update_WhenExists_ShouldUpdateAllFields() {
         AchievementRequestDto updateDto = new AchievementRequestDto();

@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -14,6 +15,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface PlayerRepository extends JpaRepository<Player, Long> {
+
+    @Modifying
+    @Query(value = "DELETE FROM player_achievements WHERE achievement_id = :achievementId", nativeQuery = true)
+    void deleteAchievementFromAllPlayers(@Param("achievementId") Long achievementId);
 
     @EntityGraph(attributePaths = {"team", "team.coach"})
     List<Player> findAll();
@@ -85,3 +90,5 @@ public interface PlayerRepository extends JpaRepository<Player, Long> {
             nativeQuery = true)
     Page<Player> searchWithFiltersNative(@Param("criteria") PlayerSearchCriteria criteria, Pageable pageable);
 }
+
+

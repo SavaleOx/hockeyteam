@@ -17,4 +17,6 @@ public class AchievementResponseDto {
 
     @Schema(description = "Описание достижения", example = "Выиграть континентальную хоккейную лигу")
     private String description;
+
+    private Integer playersCount;
 }

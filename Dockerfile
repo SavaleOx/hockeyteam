@@ -1,25 +1,40 @@
-FROM eclipse-temurin:25-jre
+# ========== ЭТАП 1: СБОРКА ==========
+FROM eclipse-temurin:21.0.7_6-jdk AS build
+
+WORKDIR /workspace
+
+COPY pom.xml .
+COPY mvnw .
+COPY .mvn ./.mvn
+RUN chmod +x mvnw
+
+RUN --mount=type=cache,target=/root/.m2 \
+    ./mvnw -q -B -DskipTests dependency:go-offline
+
+COPY src ./src
+RUN --mount=type=cache,target=/root/.m2 \
+    ./mvnw -T 1C -q -DskipTests package
+
+# ========== ЭТАП 2: ФИНАЛЬНЫЙ ОБРАЗ ==========
+FROM eclipse-temurin:21.0.7_6-jre
+
 WORKDIR /app
 
-# Создаём папку для логов
-RUN mkdir -p /app/logs
-# Даём права на запись всем пользователям (или конкретному, под которым работает приложение)
-RUN chmod 777 /app/logs
+# Устанавливаем curl и создаём папку для логов
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /app/logs && chmod 755 /app/logs
 
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends curl \
-    && rm -rf /var/lib/apt/lists/* \
-    && groupadd --system spring \
-    && useradd --system --gid spring --create-home spring
+# Создаём непривилегированного пользователя
+RUN useradd -r -u 1001 appuser
+RUN chown appuser:appuser /app/logs
 
-# Копируем уже собранный JAR из локальной папки target
-# ВАЖНО: JAR должен существовать ДО сборки образа
-COPY target/*.jar app.jar
+# Копируем JAR
+COPY --from=build /workspace/target/*.jar /app/app.jar
+RUN chown appuser:appuser /app/app.jar && chmod 0444 /app/app.jar
 
-RUN chown spring:spring /app/app.jar \
-    && chmod 0444 /app/app.jar
+ENV PORT=8081
 
-USER spring
+USER appuser
 
 EXPOSE 8081
 

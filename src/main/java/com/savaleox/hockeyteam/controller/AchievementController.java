@@ -1,5 +1,6 @@
 package com.savaleox.hockeyteam.controller;
 
+import com.savaleox.hockeyteam.dto.AchievementPlayersDto;
 import com.savaleox.hockeyteam.dto.AchievementRequestDto;
 import com.savaleox.hockeyteam.dto.AchievementResponseDto;
 import com.savaleox.hockeyteam.service.AchievementService;
@@ -70,5 +71,11 @@ public class AchievementController {
     @Operation(summary = "Частичное обновление достижения")
     public AchievementResponseDto patch(@PathVariable Long id, @RequestBody AchievementRequestDto dto) {
         return achievementService.patch(id, dto);
+    }
+
+    @GetMapping("/{id}/players")
+    @Operation(summary = "Получить список игроков, имеющих достижение, и список игроков без него")
+    public AchievementPlayersDto getAchievementPlayers(@PathVariable Long id) {
+        return achievementService.getAchievementPlayers(id);
     }
 }
