@@ -32,6 +32,6 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL)
     private List<Player> players = new ArrayList<>();
 
-    @OneToOne(mappedBy = "team")
+    @OneToOne(mappedBy = "team", cascade = CascadeType.REMOVE, orphanRemoval = true)
     private Coach coach;
 }
