@@ -1,4 +1,4 @@
-# ========== ЭТАП 1: СБОРКА ==========
+
 FROM eclipse-temurin:21.0.7_6-jdk AS build
 
 WORKDIR /workspace
@@ -15,20 +15,16 @@ COPY src ./src
 RUN --mount=type=cache,target=/root/.m2 \
     ./mvnw -T 1C -q -DskipTests package
 
-# ========== ЭТАП 2: ФИНАЛЬНЫЙ ОБРАЗ ==========
 FROM eclipse-temurin:21.0.7_6-jre
 
 WORKDIR /app
 
-# Устанавливаем curl и создаём папку для логов
 RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/* \
     && mkdir -p /app/logs && chmod 755 /app/logs
 
-# Создаём непривилегированного пользователя
 RUN useradd -r -u 1001 appuser
 RUN chown appuser:appuser /app/logs
 
-# Копируем JAR
 COPY --from=build /workspace/target/*.jar /app/app.jar
 RUN chown appuser:appuser /app/app.jar && chmod 0444 /app/app.jar
 
